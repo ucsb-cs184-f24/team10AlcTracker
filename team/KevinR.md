@@ -1,0 +1,1 @@
+Hi! I'm a 4th-year student in CS. This is my last quarter at UCSB, so I hope it'll be a fun one. I have a C++ oriented background, and I have used agile / scrum in projects + internships. Outside of academics, I like to play basketball and strategy games.
