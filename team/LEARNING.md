@@ -1,3 +1,7 @@
 # Maya Background:
 
 My background primarily consists of the foundational classes I've taken in Computer Science and also some hardware orientation projects that I've been involved in. I have experience in behavioral and mathematical modeling, as well as coding, and a end-to-end digital sound production.
+
+# Kevin's Background:
+
+My background is mostly C++ development (ML, computer graphics), as well as app development in CS156. I've done an internship which used Agile development with Scrum for project management.
