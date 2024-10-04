@@ -1,0 +1,1 @@
+My name is Maya, I'm a third year Comp Sci student. I'm super excited to be apart of the project. Most of my CS background lies in hardware/software intersection but I'm very interested in App Development. Outside of CS, I'm a musician, enjoy the beach, and am getting into cooking!
