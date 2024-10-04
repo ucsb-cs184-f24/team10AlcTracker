@@ -1,3 +1,5 @@
 Group norms:
-**if you cant show up let us know in ADVANCE
-Complete your tasks on time and ask for help if necessary
+# Ask for help from teammates and TA's if you need it
+# Check in regularly 
+# If you can't make it on a particular day, just let us know in advance and we can work around it
+
