@@ -8,3 +8,7 @@ My background is mostly C++ development (ML, computer graphics), as well as app 
 
 # Madison's Backround:
 As a 4th year CS major, I have dipped my toes into a lot of different languages. Put I primarily work in Python, C++ and Java, with some limited React expierence on the side. I am also familear with Agile devlopment from CS148 and CS156.
+
+# Elijah's Background:
+
+I am a 4th year CS major with a firm grasp on C++ and Pyhton. I also have limited knowledge in backend and frontend development in React. I have not worked on mobile development before, and I am hoping to learn as much as possible.
