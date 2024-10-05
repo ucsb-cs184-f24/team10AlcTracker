@@ -18,3 +18,6 @@ I am a 4th year CS major with a firm grasp on C++ and Pyhton. I also have limite
 I’m a 4th-year CS student with interests in Product Management, Software Consulting, and Software Engineering. I also have some experience working with the Scrum methodology from previous courses, and interships.
 
 I’m excited to work with you all this quarter!
+
+# Mariana's Background:
+I am a 4th year computer science student. I am interested in software and web app development. I also have experience React the agile methodology – especially working with scrum.
