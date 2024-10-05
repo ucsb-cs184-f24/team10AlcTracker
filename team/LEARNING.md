@@ -12,3 +12,9 @@ As a 4th year CS major, I have dipped my toes into a lot of different languages.
 # Elijah's Background:
 
 I am a 4th year CS major with a firm grasp on C++ and Pyhton. I also have limited knowledge in backend and frontend development in React. I have not worked on mobile development before, and I am hoping to learn as much as possible.
+
+# Ivan's Background:
+
+I’m a 4th-year CS student with interests in Product Management, Software Consulting, and Software Engineering. I also have some experience working with the Scrum methodology from previous courses, and interships.
+
+I’m excited to work with you all this quarter!
