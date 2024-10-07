@@ -13,6 +13,7 @@ Mariana - Present
 Maya - Present
 
 Konark - Present
+
 -------------------------------------------------------------------
 We established Norms, subject to change or develop in future meetings.
 
