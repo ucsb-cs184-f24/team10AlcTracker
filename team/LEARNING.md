@@ -21,3 +21,6 @@ I’m excited to work with you all this quarter!
 
 # Mariana's Background:
 I am a 4th year computer science student. I am interested in software and web app development. I also have experience React the agile methodology – especially working with scrum.
+
+# Konark's Background
+I'm a 4th year CS student with experience in Python, C++, Java, Javascript (React). I am familiar with agile and have done internships that utilize Agile development strategies.
