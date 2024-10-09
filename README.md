@@ -12,7 +12,7 @@ Maya Rosenbaum: mayarosenbaum
 
 Kevin Ren: ThatsBadJuju
 
-Madison Long: Madison Long
+Madison Long: madisonlong1
 
 Elijah Anderson: ElijahCanderson
 
