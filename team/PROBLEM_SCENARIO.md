@@ -1,5 +1,6 @@
 **Scenario: Team 10**  
-![fratBro](https://github.com/user-attachments/assets/1f1dffb3-81af-4b28-85c8-a40d20aa8ea2)
+<img src="https://github.com/user-attachments/assets/1f1dffb3-81af-4b28-85c8-a40d20aa8ea2" alt="fratBro" width="300" />
+
  
 Chad-Korbin, Age 22  
 UCSB 3rd year \- Major: Undeclared \- Life Goals: None
