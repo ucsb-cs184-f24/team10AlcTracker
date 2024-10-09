@@ -9,9 +9,7 @@ Chad-Korbin’s friends have told him of a significant uptick in his level of dr
 	One night, he goes out and throws up in his friend's sink. This is the moment that Chad-Korbin realized he needs to make a big change. He realizes he does not even know how much he has been drinking each week, as it has been difficult for Chad-Korbin to track his drinks in the past. He doesn’t carry around a notebook to easily mark off what he’s drinking. And even if he did, his growing levels of intoxication make it increasingly difficult to write them down. However, Chad-Korbin, like most people, always has his phone in hand. BACtrack would allow Chad-Korbin to easily log his drinks on his device, quickly and with little effort.  
 	After downloading the app, he now easily logs his drinks throughout the night using the app’s drink database. The app helps him on a nightly basis keep track of how many drinks he’s had, and his approximate BAC (Blood Alcohol Content). He also notices that he regularly has a high BAC for numerous nights, spurring him to limit his days of drinking. 
 
-![Drunken Frat Boys | Not Necessarily About Dinosaurs or Anything Else][image2]![][image3]![][image4]
-
-![][image5]  
+<img width="1000" alt="chad-koribn-progress" src="https://github.com/user-attachments/assets/d037bc5d-9bc4-4991-9a5a-db67539a2820"> 
 Chad-Korbin \- After one year of using BACtrack  
 Job: Being rich and smart  
 Money: In the billions
