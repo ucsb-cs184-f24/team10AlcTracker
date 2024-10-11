@@ -4,5 +4,5 @@ In this meeting, my group got together virtually to discuss or progress on the H
 
 # Roles
 
-Today's Scribe: Maya Rosenbaum
+Today's Scribe: Maya Rosenbaum/
 Today's Scrum Master: Mariana Rosillo
