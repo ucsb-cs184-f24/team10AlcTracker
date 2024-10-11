@@ -24,3 +24,6 @@ I am a 4th year computer science student. I am interested in software and web ap
 
 # Konark's Background
 I'm a 4th year CS student with experience in Python, C++, Java, Javascript (React). I am familiar with agile and have done internships that utilize Agile development strategies.
+
+# Helpful Resources!
+* This video helped me with the hello world - Madison: https://www.youtube.com/watch?v=saKrGCWlJDs
