@@ -3,6 +3,8 @@ Attendance:
 
 * Kevin Ren
 * Madison Long
+* Mariana Rosillo
+
 Todays Scribe/Scrum Master
 Madison Long/Kevin Ren
 # Agenda:
@@ -10,4 +12,5 @@ Madison Long/Kevin Ren
 * Discussed coding benefits and challanges with android stuido
 * Next Weeks retrospective lead: Ivan
 * asynchronously discussed benefits and drawbacks of android studio
+* Resolved issue with github org
   
