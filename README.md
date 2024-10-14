@@ -21,3 +21,5 @@ Ivan Hernandez: Ivan Hernandez
 Mariana Rosillo: Mariana Rosillo
 
 Konark Vinod: konarkv
+
+# Learning Resources
