@@ -22,4 +22,4 @@ Mariana Rosillo: Mariana Rosillo
 
 Konark Vinod: konarkv
 
-# Learning Resources
+
