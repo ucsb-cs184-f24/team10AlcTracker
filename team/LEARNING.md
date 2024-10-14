@@ -27,6 +27,9 @@ I'm a 4th year CS student with experience in Python, C++, Java, Javascript (Reac
 
 # Helpful Resources!
 * This video helped me with the hello world - Madison: https://www.youtube.com/watch?v=saKrGCWlJDs
+* Documentation - https://developer.android.com/guide 
+* Google sign in with firebase - https://www.youtube.com/watch?v=zCIfBbm06QM
+* Learn Android with jetpack compose playlist - https://www.youtube.com/playlist?list=PLhPyEFL5u-i1BpjjNxQGyhWDRUm1EvHty (You can skip the first 2 videos in the playlist)
 
 # 10/14/24
 
