@@ -24,3 +24,48 @@ I am a 4th year computer science student. I am interested in software and web ap
 
 # Konark's Background
 I'm a 4th year CS student with experience in Python, C++, Java, Javascript (React). I am familiar with agile and have done internships that utilize Agile development strategies.
+
+# Helpful Resources!
+* This video helped me with the hello world - Madison: https://www.youtube.com/watch?v=saKrGCWlJDs
+* Documentation - https://developer.android.com/guide 
+* Google sign in with firebase - https://www.youtube.com/watch?v=zCIfBbm06QM
+* Learn Android with jetpack compose playlist - https://www.youtube.com/playlist?list=PLhPyEFL5u-i1BpjjNxQGyhWDRUm1EvHty (You can skip the first 2 videos in the playlist)
+* Android Beginner Course - https://ucsb-cs184-f24.slack.com/archives/C07R0AD93LG/p1729100282393599
+
+# 10/14/24
+
+# Android:
+
+  Benefits: 
+
+Easy to visualize user interface,
+Build/run features are simple and quick,
+Easy to customize the app,
+Similar to existing/popular IDE IntelliJ,
+Native performance benefits,
+Built in emulator for a wide variety of phones and tablets,
+
+  Challenges:
+  
+No iOS support,
+Testing and debugging,
+Emulator vs real device (I heard it’s different),
+Fragmentation  
+
+# React Native:
+
+  Benefits: 
+ 
+Cross platform,
+More similar to previous projects with web-dev,
+No need for an Android/Iphone device or emulation,
+If you have experience with React, it can be easier to use,
+
+  Challenges: 
+ 
+It might require specific versions of maven and node.js in order to work,
+JavaScript Library, making it a steeper learning curve.,
+Expo Go sometimes glitches ,
+If you are working in a public network, you might need to use “–tunnel” to make it work (it might ask you to download more things),
+Performance issues compared to native development. 
+
