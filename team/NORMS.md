@@ -16,5 +16,5 @@
 
 8. Notify teammates before taking over their work
 
-9. Document kanban board
+9. Document kanban board.
 
