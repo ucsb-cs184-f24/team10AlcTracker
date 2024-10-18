@@ -17,4 +17,5 @@ Today's Scrum Master: Mariana Rosillo
 * Ivan: To accomplish this user story, update the database schema to store weight and height, modify the user profile UI to input this data, and refactor the BAC calculation algorithm to include weight for more accurate estimates.
 * Madison: design 3 composables accessible via a locked visual navigation bar across the app’s interface
 * Maya: Update database to store extensive list of common drinks and associated stats (alcohol content)
-* Mariana: To complete this, create a program that computes the BAC based on alcohol consumption, weight, and height. 
+* Mariana: To complete this, create a program that computes the BAC based on alcohol consumption, weight, and height.
+* Elijah: Set up a google authentication sign in upon opening the app intially. (Perhaps required for all users or not)
