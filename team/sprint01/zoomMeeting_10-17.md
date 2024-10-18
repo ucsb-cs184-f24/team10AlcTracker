@@ -12,6 +12,7 @@ Today's Scrum Master: Mariana Rosillo
 * Ivan: User Story: Jose wants to be able to input his weight and height into the app, so that it can provide more accurate estimates of his Blood Alcohol Content (BAC) and track his alcohol consumption based on his personal attributes.
 * Mariana: User Story: Joe wants to know what his BAC is as he is drinking.
 * Elijah: User Story: Joana wants privacy and security when it comes to get drinking habits. She wants some sort of authentication.
+* Konark: User story: Joe Gaucho wants a clean UI to add drinks at a press of a button for easy functionality while intoxicated.
 
 # How Will We Do It?
 * Ivan: To accomplish this user story, update the database schema to store weight and height, modify the user profile UI to input this data, and refactor the BAC calculation algorithm to include weight for more accurate estimates.
@@ -19,3 +20,4 @@ Today's Scrum Master: Mariana Rosillo
 * Maya: Update database to store extensive list of common drinks and associated stats (alcohol content)
 * Mariana: To complete this, create a program that computes the BAC based on alcohol consumption, weight, and height.
 * Elijah: Set up a google authentication sign in upon opening the app intially. (Perhaps required for all users or not)
+* Konark: Add icons for different drinks to make it visually easier to see what drinks to add.
