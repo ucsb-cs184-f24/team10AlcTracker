@@ -1,4 +1,4 @@
-# Lecture 7
+# Lecture 7 (10/23/2024)
 ### Scrum Master: Elijah Anderson
 ### Scribe: Konark Vinod
 
