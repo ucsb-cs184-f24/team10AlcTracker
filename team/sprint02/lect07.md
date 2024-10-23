@@ -1,6 +1,6 @@
 # Lecture 7
-## Scrum Master: Elijah Anderson
-## Scribe: Konark Vinod
+### Scrum Master: Elijah Anderson
+### Scribe: Konark Vinod
 
 ## SCRUM
 ### Elijah Anderson
