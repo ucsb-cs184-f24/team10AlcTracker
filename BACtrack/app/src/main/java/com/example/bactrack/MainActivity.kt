@@ -45,7 +45,7 @@ import androidx.navigation.compose.composable
 
 
 
-
+// this is a test comment to ensure github works correctly
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
