@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
 
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFFADD8E6)
+                    color = Color(0xFFADD8E6) //color can be subject to change
                 ) {
                     Scaffold(
                         bottomBar = {
@@ -156,13 +156,13 @@ fun BottomNavigationBar(
                 onClick = { onItemSelected(index)},
                 label = { Text(text = item.title) },
                 icon = {
-                    BadgedBox(
+                    BadgedBox( ////////////////this is boiler plate code for the event we want to add notifications to the iconss
                         badge = {
                             if(item.badgeCount != null) {
                                 Badge{ Text(text = item.badgeCount.toString()) }
                             } else if(item.hasNews) { Badge()}
                         }
-                    ) {
+                    ) { ///////////////////////
                         Icon(
                             imageVector = if(index == selectedItemIndex) {
                                 item.selectedIcon
