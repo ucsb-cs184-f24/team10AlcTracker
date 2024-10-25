@@ -10,6 +10,11 @@
 * a change: We want to have more meetings outside of class to determine what direction to take as we move toward our MVP
 * a measurement: We will see if the change helped us achieve the goal if we have at some extra steps on how to move toward our MVP
 
+  # outcome:
+  Since our retro, we have had increased attendance, more engagement and better group progress. The diffrence is quite frankly shocking. - Madison, (Retro Leader)
+
+Our experiment had been (so far) quite a successs. With more frequent check ins, better team communication and more group work completed. 
+
 ## Optional
 
 * We have documented our retro in the following document: [Retro 01 Google Doc](https://docs.google.com/document/d/14VJiF2AXW-SnYDZESFxlccj9L2SnyRzB/edit?usp=sharing&ouid=113612488218708803843&rtpof=true&sd=true)
