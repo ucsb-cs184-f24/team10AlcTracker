@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
@@ -35,18 +36,28 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.ui.theme.BACtrackTheme
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.googlefonts.Font
+import androidx.compose.ui.text.googlefonts.GoogleFont
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.example.bactrack.uiScreens.DisplayOne
 
 
-
-
-// this is a test comment to ensure github works correctly
-//this comment should appear on the main branch
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,7 +136,7 @@ data class BottomNavigationItem (
     //this will represent a number of notifications the icon will contain (optional)
     val hasNews: Boolean,
     val badgeCount: Int? = null
-){ }
+)
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
@@ -156,7 +167,7 @@ fun BottomNavigationBar(
                 onClick = { onItemSelected(index)},
                 label = { Text(text = item.title) },
                 icon = {
-                    BadgedBox( ////////////////this is boiler plate code for the event we want to add notifications to the iconss
+                    BadgedBox( ////////////////this is boiler plate code for the event we want to add notifications to the icons
                         badge = {
                             if(item.badgeCount != null) {
                                 Badge{ Text(text = item.badgeCount.toString()) }
@@ -181,16 +192,44 @@ fun BottomNavigationBar(
 
 @Composable
 fun HomeScreen() {
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFADD8E6)
 
     ) {
-        Text(
-            text = "Home Screen",
-            color = Color.Black
-        )
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            item {
+                Image(
+                    painter = painterResource(id = R.drawable.bactrack_logo_nobackround),
+                    contentDescription = "BACtrack Logo",
+                    modifier = Modifier
+                        .size(200.dp)
+
+                )
+            }
+            item {
+                Text(
+                    text = "Welcome to BACtrack",
+                    color = Color.Black,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontSize = 36.sp
+                )
+            }
+            item {
+                DisplayOne()
+            }
+
+
+
+        }
+
     }
+
+
 }
 
 @Composable
@@ -217,5 +256,14 @@ fun SettingsScreen() {
             color = Color.Black
         )
     }
+}
+
+data class CurrentSession(
+    val numBeers: Int = 0,
+    val numWine: Int = 0,
+    val numShots: Int = 0,
+    val numCocktails: Int = 0
+) {
+
 }
 

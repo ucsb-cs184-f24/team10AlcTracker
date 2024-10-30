@@ -42,6 +42,8 @@ android {
 dependencies {
     implementation("androidx.compose.ui:ui-text-google-fonts:1.7.4")
     implementation("androidx.compose.material:material-icons-extended:1.5.0")
+    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.4")
+
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
