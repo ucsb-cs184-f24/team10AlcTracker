@@ -207,6 +207,7 @@ fun HomeScreen() {
                     contentDescription = "BACtrack Logo",
                     modifier = Modifier
                         .size(200.dp)
+                        .padding(top = 75.dp)
 
                 )
             }
@@ -220,16 +221,22 @@ fun HomeScreen() {
                 )
             }
             item {
-                DisplayOne()
+                DisplayOne() //This shows the Add a drink button
             }
-
-
+            item {
+                Text(
+                    modifier = Modifier.padding(top = 220.dp),
+                    text = "Your BAC is : " + SessionManager.totalDrinks.toString(),
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontSize = 48.sp
+                )
+            }
 
         }
 
     }
-
-
 }
 
 @Composable
