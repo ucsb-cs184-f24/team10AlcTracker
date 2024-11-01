@@ -80,6 +80,7 @@ import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.bactrack.SessionManager.totalAlcMass
 import com.example.bactrack.uiScreens.DisplayOne
 
 
@@ -225,7 +226,7 @@ fun HomeScreen() {
     // Values for testing.. this will be fixed after MVP!
     val userWeight = 70.0 // Example weight in kg
     val userSex = "male" // Example sex
-    val totalAlcoholConsumed = 1000.0 // Adjust based on how you're tracking total alcohol
+    val totalAlcoholConsumed = totalAlcMass
     val timeSinceDrinking = 1.0 // Example: 2 hours since drinking started
 
 
@@ -266,7 +267,7 @@ fun HomeScreen() {
                     color = Color.Red,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 38.sp
+                    fontSize = 35.sp
                 )
             }
 
