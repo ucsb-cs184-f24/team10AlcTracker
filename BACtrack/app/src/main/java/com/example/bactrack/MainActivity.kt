@@ -51,7 +51,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -222,6 +222,13 @@ fun BottomNavigationBar(
 @Composable
 fun HomeScreen() {
 
+    // Values for testing.. this will be fixed after MVP!
+    val userWeight = 70.0 // Example weight in kg
+    val userSex = "male" // Example sex
+    val totalAlcoholConsumed = 1000.0 // Adjust based on how you're tracking total alcohol
+    val timeSinceDrinking = 1.0 // Example: 2 hours since drinking started
+
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFADD8E6)
@@ -255,11 +262,22 @@ fun HomeScreen() {
             item {
                 Text(
                     modifier = Modifier.padding(top = 220.dp),
-                    text = "Your BAC is : " + SessionManager.totalDrinks.toString(),
+                    text = "Your drink count is : " + SessionManager.totalDrinks.toString(),
                     color = Color.Red,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontSize = 48.sp
+                    fontSize = 38.sp
+                )
+            }
+
+            item {
+                Text(
+                    modifier = Modifier.padding(top = 100.dp),
+                    text = "Your BAC is : ${calculateBAC(totalAlcoholConsumed, userWeight, userSex, timeSinceDrinking).format(3)}",
+                    color = Color.Red,
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontSize = 30.sp
                 )
             }
 
@@ -267,6 +285,8 @@ fun HomeScreen() {
 
     }
 }
+
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
 
 @Composable
 fun HistoryScreen() {
