@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BACtrack</string>
+    <string name="title_activity_landing">Landing</string>
 </resources>
