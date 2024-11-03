@@ -1,6 +1,7 @@
 package com.example.bactrack
 
 import android.annotation.SuppressLint
+import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -224,6 +225,11 @@ fun BottomNavigationBar(
 
 @Composable
 fun HomeScreen() {
+    // Values for testing.. this will be fixed after MVP!
+    val userWeight = 70.0 // Example weight in kg
+    val userSex = "male" // Example sex
+    val totalAlcoholConsumed = totalAlcMass
+    val timeSinceDrinking = 1.0 // Example: 2 hours since drinking started
     var counter by remember { mutableStateOf(0) }
     val maxCounter = 10 // Set a max level for the mug
     val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
@@ -280,11 +286,21 @@ fun HomeScreen() {
                 item {
                     Text(
                         modifier = Modifier.padding(top = 1.dp),
-                        text = "Your BAC is : " + SessionManager.totalDrinks.toString(),
+                        text = "Your drink count is : " + SessionManager.totalDrinks.toString(),
                         color = Color.Red,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 48.sp
+                        fontSize = 35.sp
+                    )
+                }
+                item {
+                    Text(
+                        //modifier = Modifier.padding(top = 100.dp),
+                        text = "Your BAC is : ${calculateBAC(totalAlcoholConsumed, userWeight, userSex, timeSinceDrinking).format(3)}",
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 30.sp
                     )
                 }
 
@@ -318,7 +334,7 @@ fun Mug(fillLevel: Float) {
         )
     }
 }
-
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
 fun HistoryScreen() {
     Surface(
