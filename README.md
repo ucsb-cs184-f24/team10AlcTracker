@@ -47,7 +47,7 @@ You will find a zip folder in our release tag named "First Release". Inside is a
 ## Instructions for virtual deployment:
 * download android studio from the following link https://developer.android.com/studio
 * once installed, got to file, new, and select "Project From Version Control"
-* Paste the following link into the text box
+* Paste the following link into the text box: https://github.com/ucsb-cs184-f24/team10AlcTracker.git
 * Wait for program to compile
 * press the green "Play" button at the top of the screen and the project will start up via the default emulator
 * Ensure you have conntection to the internet, and select "Sign in with Github"
