@@ -247,11 +247,11 @@ fun HomeScreen() {
             ) {
                 item {
                     Image(
-                        painter = painterResource(id = R.drawable.bactrack_logo_nobackround),
+                        painter = painterResource(id = R.drawable.bactrack_logo_better),
                         contentDescription = "BACtrack Logo",
                         modifier = Modifier
                             .size(200.dp)
-                            .padding(top = 75.dp)
+                            .padding(top = 25.dp)
 
                     )
                 }
