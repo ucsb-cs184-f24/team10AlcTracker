@@ -41,4 +41,17 @@ User will track their alcohol content throughout the night and have options to:
   <li>View generalized “score” based on all data variables that will be displayed in fun/colorful icon/message</li>
 </ol>
 
+## Installation 
+You will find a zip folder in our release tag named "First Release". Inside is an APK to use the app. Download the file and extract the apk. The APK can then be moved to an Android device and installed. Currently, our oldest version tested is Android 12, thus we cannot confirm if BACtrack works on any previous versions.
+
+## Instructions for virtual deployment:
+* download android studio from the following link https://developer.android.com/studio
+* once installed, got to file, new, and select "Project From Version Control"
+* Paste the following link into the text box: https://github.com/ucsb-cs184-f24/team10AlcTracker.git
+* Wait for program to compile
+* press the green "Play" button at the top of the screen and the project will start up via the default emulator
+* Ensure you have conntection to the internet, and select "Sign in with Github"
+* Enter your credntials and use the app!
+* See team for details/help bypassing any issues related to private git.ignore files
+
 

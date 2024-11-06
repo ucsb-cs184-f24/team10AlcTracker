@@ -1,6 +1,7 @@
 package com.example.bactrack
 
 import android.annotation.SuppressLint
+import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -224,6 +225,11 @@ fun BottomNavigationBar(
 
 @Composable
 fun HomeScreen() {
+    // Values for testing.. this will be fixed after MVP!
+    val userWeight = 70.0 // Example weight in kg
+    val userSex = "male" // Example sex
+    val totalAlcoholConsumed = totalAlcMass
+    val timeSinceDrinking = 1.0 // Example: 2 hours since drinking started
     var counter by remember { mutableStateOf(0) }
     val maxCounter = 10 // Set a max level for the mug
     val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
@@ -280,11 +286,21 @@ fun HomeScreen() {
                 item {
                     Text(
                         modifier = Modifier.padding(top = 1.dp),
-                        text = "Your BAC is : " + SessionManager.totalDrinks.toString(),
+                        text = "Your drink count is : " + SessionManager.totalDrinks.toString(),
                         color = Color.Red,
                         fontWeight = FontWeight.Bold,
                         style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 48.sp
+                        fontSize = 35.sp
+                    )
+                }
+                item {
+                    Text(
+                        //modifier = Modifier.padding(top = 100.dp),
+                        text = "Your BAC is : ${calculateBAC(totalAlcoholConsumed, userWeight, userSex, timeSinceDrinking).format(3)}",
+                        color = Color.Red,
+                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.bodyLarge,
+                        fontSize = 30.sp
                     )
                 }
 
@@ -318,7 +334,7 @@ fun Mug(fillLevel: Float) {
         )
     }
 }
-
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
 fun HistoryScreen() {
     Surface(
@@ -358,8 +374,8 @@ data class CurrentSession(
 
 @Composable
 fun ProfileMenu() {
-    val menuItems = listOf("Personal Info", "Body Measurements", "Preferences")
-    var selectedMenuItem by remember { mutableStateOf("Personal Info") }
+    val menuItems = listOf("Personal Information", "Health Info", "Preferences", "Account Details", "Settings", "Custom Sections")
+    var selectedMenuItem by remember { mutableStateOf("Personal Information") }
 
     Row(modifier = Modifier.fillMaxSize()) {
         // Menu Column on the left
@@ -383,7 +399,7 @@ fun ProfileMenu() {
             }
         }
 
-        // Dynamic Content on the right
+        // Display selected section
         Column(
             modifier = Modifier
                 .fillMaxHeight()
@@ -391,22 +407,26 @@ fun ProfileMenu() {
                 .weight(1f)
         ) {
             when (selectedMenuItem) {
-                "Personal Info" -> PersonalInfoTab()
-//                "Profile Picture" -> ProfilePictureTab()
-                "Body Measurements" -> BodyMeasurementsTab()
-                "Preferences" -> PreferencesTab()
+                "Personal Information" -> PersonalInformationSection()
+                "Health Info" -> HealthInfoSection()
+                "Preferences" -> PreferencesSection()
+                "Account Details" -> AccountDetailsSection()
+                "Settings" -> SettingsSection()
+                "Custom Sections" -> CustomSectionsSection()
             }
         }
     }
 }
 
-@SuppressLint("RememberReturnType")
 @Composable
-fun PersonalInfoTab() {
+fun PersonalInformationSection() {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     var name by remember { mutableStateOf(sharedPreferences.getString("name", "") ?: "") }
     var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "") ?: "") }
+    var dob by remember { mutableStateOf(sharedPreferences.getString("dob", "") ?: "") }
+    var email by remember { mutableStateOf(sharedPreferences.getString("email", "") ?: "") }
+    var phone by remember { mutableStateOf(sharedPreferences.getString("phone", "") ?: "") }
 
 
 
@@ -421,9 +441,8 @@ fun PersonalInfoTab() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Display profile picture (placeholder image for now)
             Image(
-                painter = painterResource(id = R.drawable.profile_user), // Use a drawable resource
+                painter = painterResource(id = R.drawable.profile_user), // replace with actual profile picture
                 contentDescription = "Profile Picture",
                 modifier = Modifier
                     .height(100.dp)
@@ -432,31 +451,60 @@ fun PersonalInfoTab() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Display name information
-            Text(
-                text = "Name: $name",
-                style = MaterialTheme.typography.titleLarge,  // Updated text style ,
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Black
-            )
+
 
 
             Spacer(modifier = Modifier.height(16.dp))
 
 //
-            val gender = "Male"
-            Text(
-                text = "Gender: $gender",
-                style = MaterialTheme.typography.titleLarge,  // Use titleLarge instead of h6
-                modifier = Modifier.fillMaxWidth(),
-                color = Color.Black
-            )
+            EditableProfileField("Name", name) { name = it }
+            EditableProfileField("Gender", gender) { gender = it }
+            EditableProfileField("Date of Birth", dob) { dob = it }
+            EditableProfileField("Email", email) { email = it }
+            EditableProfileField("Phone Number", phone) { phone = it }
 
-            Button(onClick = {
-                // Perform actions to navigate or edit profile info
-            }) {
-                Text(text = "Edit Profile Info")
-            }
+        }
+    }
+}
+// Helper Composable for Profile Fields
+@Composable
+fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange: (String) -> Unit) {
+    if (isEditing) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(label) },
+            modifier = Modifier.fillMaxWidth()
+        )
+    } else {
+        Text(
+            text = "$label: $value",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.fillMaxWidth(),
+            color = Color.Black
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+}
+@Composable
+fun HealthInfoSection() {
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    var height by remember { mutableStateOf(sharedPreferences.getString("height", "") ?: "") }
+    var weight by remember { mutableStateOf(sharedPreferences.getString("weight", "") ?: "") }
+    var healthGoals by remember { mutableStateOf(sharedPreferences.getString("health_goals", "") ?: "") }
+
+    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            EditableProfileField("Height", height) { height = it }
+            EditableProfileField("Weight", weight) { weight = it }
+            EditableProfileField("Health Goals", healthGoals) { healthGoals = it }
         }
     }
 }
@@ -546,3 +594,113 @@ fun PreferencesTab() {
         }
     }
 }
+
+@Composable
+fun PreferencesSection() {
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    var notificationsEnabled by remember { mutableStateOf(sharedPreferences.getBoolean("notifications", true)) }
+    var themePreference by remember { mutableStateOf(sharedPreferences.getString("theme", "Light") ?: "Light") }
+
+    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Ensure `notificationsEnabled` is a `Boolean` and `themePreference` is a `String`
+            var notificationsEnabled by remember { mutableStateOf(false) }
+            var themePreference by remember { mutableStateOf("Light") }
+
+            // Pass the right lambda type
+//            SwitchSetting("Enable Notifications", notificationsEnabled) { isEnabled: Boolean ->
+//                notificationsEnabled = isEnabled
+//            }
+
+            EditableProfileField("Theme Preference", themePreference) { newPreference: String ->
+                themePreference = newPreference
+            }
+        }
+    }
+
+
+}
+@Composable
+fun SwitchSetting(x0: String, x1: Boolean, content: @Composable () -> Unit) {
+    TODO("Not yet implemented")
+}
+
+@Composable
+fun AccountDetailsSection() {
+    val context = LocalContext.current
+    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+    var loginEmail by remember { mutableStateOf(sharedPreferences.getString("login_email", "") ?: "") }
+    var subscriptionPlan by remember { mutableStateOf(sharedPreferences.getString("subscription_plan", "Free") ?: "Free") }
+    var lastLogin by remember { mutableStateOf(sharedPreferences.getString("last_login", "") ?: "") }
+
+    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            EditableProfileField("Login Email", loginEmail) { loginEmail = it }
+            EditableProfileField("Subscription Plan", subscriptionPlan) { subscriptionPlan = it }
+            EditableProfileField("Last Login", lastLogin) { lastLogin = it }
+        }
+    }
+}
+
+@Composable
+fun SettingsSection() {
+    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Settings Section")
+            Button(onClick = { /* Implement data export */ }) { Text("Export Data") }
+            Button(onClick = { /* Implement account deletion */ }) { Text("Delete Account") }
+        }
+    }
+}
+
+@Composable
+fun CustomSectionsSection() {
+    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text("Custom Sections")
+            EditableProfileField("Emergency Contact", "", isEditing = true, onValueChange = { /* Implement save logic */ })
+            EditableProfileField("Medical Restrictions", "", isEditing = true, onValueChange = { /* Implement save logic */ })
+        }
+    }
+}
+
+
+@Composable
+fun EditableProfileField(label: String, value: String, isEditing: Boolean = true, onValueChange: (String) -> Unit) {
+    if (isEditing) {
+        OutlinedTextField(
+            value = value,
+            onValueChange = onValueChange,
+            label = { Text(label) },
+            modifier = Modifier.fillMaxWidth()
+        )
+    } else {
+        Text(text = "$label: $value", modifier = Modifier.fillMaxWidth())
+    }
+}
+
