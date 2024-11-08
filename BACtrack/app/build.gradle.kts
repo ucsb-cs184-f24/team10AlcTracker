@@ -83,4 +83,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation ("androidx.compose.material3:material3:<latest_version>")
+    implementation( "androidx.compose.animation:animation:1.4.3") // Replace with the latest version if needed
+    implementation ("androidx.compose.ui:ui:1.4.3") // Ensure this matches the version for animation
+    implementation ("androidx.compose.material:material:1.4.3") // Update as needed
+    implementation ("androidx.compose.animation:animation:1.4.0") // or the latest version
+
+
+
 }
