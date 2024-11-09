@@ -371,7 +371,6 @@ data class CurrentSession(
 
 }
 
-
 @Composable
 fun ProfileMenu() {
     val menuItems = listOf("Personal Information", "Health Info", "Preferences", "Account Details", "Settings", "Custom Sections")
