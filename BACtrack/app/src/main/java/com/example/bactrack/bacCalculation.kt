@@ -22,10 +22,10 @@ fun calculateBAC(totalAlcoholConsumed: Double, weight: Double, sex: String, time
 
 
 data class User(
-    val name: String,
-    val weight: Double,
-    val sex: Boolean, // "male" or "female"
-    val totalAlcoholConsumed: Double
+    var name: String,
+    var weight: Double,
+    var sex: Boolean, // "male" or "female"
+    var totalAlcoholConsumed: Double
 )
 
 
