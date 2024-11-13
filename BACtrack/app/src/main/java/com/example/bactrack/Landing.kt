@@ -1,6 +1,7 @@
 package com.example.bactrack
 
 import android.annotation.SuppressLint
+import android.app.Person
 import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.os.Bundle
@@ -8,6 +9,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -76,15 +81,44 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
-import androidx.compose.ui.unit.dp
+
 import androidx.compose.ui.unit.sp
 import com.example.bactrack.uiScreens.DisplayOne
+import androidx.compose.material3.*
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.toSize
+import com.example.bactrack.PersonManager.mainUser
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+
+
+
+
 
 
 class Landing : ComponentActivity() {
@@ -225,90 +259,172 @@ fun BottomNavigationBar(
 
 @Composable
 fun HomeScreen() {
-    // Values for testing.. this will be fixed after MVP!
-    val userWeight = 70.0 // Example weight in kg
-    val userSex = "male" // Example sex
+    // Sample values for testing
+    val userWeight = 70.0
+    val userSex = "male"
     val totalAlcoholConsumed = totalAlcMass
-    val timeSinceDrinking = 1.0 // Example: 2 hours since drinking started
+    val timeSinceDrinking = 1.0
     var counter by remember { mutableStateOf(0) }
-    val maxCounter = 10 // Set a max level for the mug
+    val maxCounter = 10
     val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
+
+    // Infinite transition for animated background
+    val infiniteTransition = rememberInfiniteTransition()
+    val color1 by infiniteTransition.animateColor(
+        initialValue = Color(0xFF00796B),
+        targetValue = Color(0xFF004D40),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 4000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val color2 by infiniteTransition.animateColor(
+        initialValue = Color(0xFF80CBC4),
+        targetValue = Color(0xFFA7FFEB),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 4000, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFFADD8E6)
-
+        color = Color.Transparent // We use the gradient background instead
     ) {
         Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(color1, color2),
+                        start = androidx.compose.ui.geometry.Offset.Zero,
+                        end = androidx.compose.ui.geometry.Offset.Infinite
+                    )
+                ),
+            contentAlignment = Alignment.Center
         ) {
             LazyColumn(
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 item {
+                    // Rotating logo with animation
+                    val infiniteRotation = rememberInfiniteTransition()
+                    val rotationAngle by infiniteRotation.animateFloat(
+                        initialValue = 0f,
+                        targetValue = 360f,
+                        animationSpec = infiniteRepeatable(
+                            animation = tween(durationMillis = 6000, easing = LinearEasing),
+                            repeatMode = RepeatMode.Restart
+                        )
+                    )
+
                     Image(
-                        painter = painterResource(id = R.drawable.bactrack_logo_nobackround),
+                        painter = painterResource(id = R.drawable.bactrack_logo_better),
                         contentDescription = "BACtrack Logo",
                         modifier = Modifier
-                            .size(200.dp)
-                            .padding(top = 75.dp)
-
+                            .size(160.dp)
+                            .padding(top = 24.dp)
+                            .rotate(rotationAngle) // Rotating effect
                     )
                 }
                 item {
-
                     Text(
-                        text = "Welcome to \n \n BACtrack",
-
-                        color = Color.Black,
+                        text = "\uD83C\uDF7B Welcome to BACtrack! \uD83C\uDF77 ",
+                        color = Color.White,
                         fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 36.sp
+                        fontSize = 22.sp,
+                        modifier = Modifier
+                            .padding(bottom = 20.dp)
+                            .shadow(4.dp, shape = MaterialTheme.shapes.medium)
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(Color.Magenta, Color.Blue, Color.Cyan)
+                                ),
+                                shape = MaterialTheme.shapes.medium
+                            )
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
                     )
                 }
                 item {
-                    DisplayOne() //This shows the Add a drink button
+                    Button(
+                        onClick = { if (counter < maxCounter) counter++ },
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00ACC1)),
+                        shape = MaterialTheme.shapes.medium
+                    ) {
+                        Text("Add a Drink", color = Color.White)
+                    }
                 }
-
                 item {
                     Mug(fillLevel = fillLevel)
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Button(onClick = { if (counter < maxCounter) counter++ }) {
-                        Text(text = "Increase Count")
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        Button(
+                            onClick = { if (counter < maxCounter) counter++ },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00ACC1)),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Add More", color = Color.White)
+                        }
+                        Button(
+                            onClick = { if (counter > 0) counter-- },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00838F)),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Icon(Icons.Default.Remove, contentDescription = null, tint = Color.White)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Reduce", color = Color.White)
+                        }
                     }
-                    Button(onClick = { if (counter < maxCounter) counter-- }) {
-                        Text(text = "Decrease Count")
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .background(Color(0xFF1B5E20), shape = MaterialTheme.shapes.medium)
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Total Drinks: ${SessionManager.totalDrinks}",
+                            color = Color(0xFFFFD700),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 26.sp,
+                            fontFamily = FontFamily.Serif
+                        )
                     }
                 }
-
                 item {
-                    Text(
-                        modifier = Modifier.padding(top = 1.dp),
-                        text = "Your drink count is : " + SessionManager.totalDrinks.toString(),
-                        color = Color.Red,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 35.sp
-                    )
+                    Box(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .background(Color(0xFF263238), shape = MaterialTheme.shapes.medium)
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Current BAC: ${calculateBAC(totalAlcoholConsumed, userWeight, userSex, timeSinceDrinking).format(3)}",
+                            color = Color(0xFF76FF03),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 26.sp,
+                            fontFamily = FontFamily.Serif
+                        )
+                    }
                 }
-                item {
-                    Text(
-                        //modifier = Modifier.padding(top = 100.dp),
-                        text = "Your BAC is : ${calculateBAC(totalAlcoholConsumed, userWeight, userSex, timeSinceDrinking).format(3)}",
-                        color = Color.Red,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontSize = 30.sp
-                    )
-                }
-
             }
-
         }
     }
 }
+
+
+
+
 
 @Composable
 fun Mug(fillLevel: Float) {
@@ -370,7 +486,6 @@ data class CurrentSession(
 ) {
 
 }
-
 
 @Composable
 fun ProfileMenu() {
@@ -458,7 +573,7 @@ fun PersonalInformationSection() {
 
 //
             EditableProfileField("Name", name) { name = it }
-            EditableProfileField("Gender", gender) { gender = it }
+//            EditableProfileField("Gender", gender) { gender = it }
             EditableProfileField("Date of Birth", dob) { dob = it }
             EditableProfileField("Email", email) { email = it }
             EditableProfileField("Phone Number", phone) { phone = it }
@@ -486,28 +601,135 @@ fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HealthInfoSection() {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    var height by remember { mutableStateOf(sharedPreferences.getString("height", "") ?: "") }
     var weight by remember { mutableStateOf(sharedPreferences.getString("weight", "") ?: "") }
-    var healthGoals by remember { mutableStateOf(sharedPreferences.getString("health_goals", "") ?: "") }
-
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+    var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "Female") ?: "Female") }
+    var showMessage by remember { mutableStateOf(false) }
+    val genderOptions = listOf("Male","Female","Other")
+    var expanded by remember {mutableStateOf(false)}
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color(0xFFADD8E6)
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            EditableProfileField("Height", height) { height = it }
-            EditableProfileField("Weight", weight) { weight = it }
-            EditableProfileField("Health Goals", healthGoals) { healthGoals = it }
+            OutlinedTextField(
+                value = weight,
+                onValueChange = {
+                    val newValue = it.toDoubleOrNull()
+                    if (newValue != null && newValue > 0 && newValue < 500)
+                        weight = it
+                },
+                label = { Text("Enter your weight (kg)") },
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+            )
+
+            //drop down menu for gender selection
+            dropDownMenu(
+                selectedGender = gender,
+                setSelectedGender = { gender = it } // Lambda to update gender in HealthInfoSection
+            )
+
+            Spacer(modifier = Modifier.weight(1f)) // Push the button to the bottom
+
+            Button(
+                onClick = {
+                    if (weight.isNotBlank() && gender.isNotBlank()) {
+                        val editor = sharedPreferences.edit()
+                        editor.putString("weight", weight)
+                        editor.putString("gender", gender)
+                        editor.apply()
+
+                        val weightDouble = weight.toDoubleOrNull() ?: 70.0
+                        val isMale = when (gender) {
+                            "Male" -> true
+                            "Female" -> false
+                            else -> false //Assume non binary is female
+                        }
+                        PersonManager.setGender(isMale)
+                        PersonManager.setWeight(weightDouble)
+                        showMessage = true
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Save")
+            }
+
+            if (showMessage) {
+                Text(
+                    text = "Details saved successfully!",
+                    color = Color.Gray,
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+            }
         }
     }
 }
+
+@Composable
+fun dropDownMenu(
+    selectedGender: String,
+    setSelectedGender: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val list = listOf("Male", "Female", "Other (Biological Male)", "Other (Biological Female)")
+    var selectedItem by remember { mutableStateOf("") }
+
+    var textFiledSize by remember { mutableStateOf(Size.Zero)}
+
+    val icon = if (expanded) {
+        Icons.Filled.KeyboardArrowUp
+    } else {
+        Icons.Filled.KeyboardArrowDown
+    }
+
+    Column(modifier = Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedItem,
+            onValueChange = {selectedItem = it},
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    textFiledSize = coordinates.size.toSize()
+                },
+            label = { Text("Select your gender") },
+            readOnly = true,
+            trailingIcon = {
+                Icon(icon,"",Modifier.clickable { expanded = !expanded })
+            }
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textFiledSize.width.toDp() })
+        ) {
+            list.forEach { label ->
+                DropdownMenuItem(
+                    text = { Text(text = label) },
+                    onClick = {
+                    selectedItem = label
+                    expanded = false
+                    setSelectedGender(label)
+                    }
+                )
+            }
+        }
+    }
+}
+
 
 @Composable
 fun BodyMeasurementsTab() {

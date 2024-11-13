@@ -13,7 +13,7 @@ object SessionManager {
 
     //this will return total mass of alcohol consumed in grams
     val totalAlcMass: Double
-        get() = totalDrinks * 14.0
+        get() = (currentSession.numBeers * 14.0) + (currentSession.numWine * 20.8) + (currentSession.numShots * 14) + (currentSession.numCocktails * 27.1)
 }
 //this is a global object that will be used to store the current session
 
