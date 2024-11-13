@@ -1,6 +1,7 @@
 package com.example.bactrack
 
 import android.annotation.SuppressLint
+import android.app.Person
 import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.os.Bundle
@@ -88,11 +89,10 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
-import androidx.compose.ui.unit.dp
+
 import androidx.compose.ui.unit.sp
 import com.example.bactrack.uiScreens.DisplayOne
 import androidx.compose.material3.*
-import androidx.compose.ui.unit.dp
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
@@ -100,9 +100,25 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.toSize
+import com.example.bactrack.PersonManager.mainUser
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.*
+
+
+
+
 
 
 class Landing : ComponentActivity() {
@@ -585,14 +601,16 @@ fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HealthInfoSection() {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     var weight by remember { mutableStateOf(sharedPreferences.getString("weight", "") ?: "") }
-    var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "") ?: "") }
+    var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "Female") ?: "Female") }
     var showMessage by remember { mutableStateOf(false) }
-
+    val genderOptions = listOf("Male","Female","Other")
+    var expanded by remember {mutableStateOf(false)}
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFADD8E6)
@@ -606,17 +624,20 @@ fun HealthInfoSection() {
         ) {
             OutlinedTextField(
                 value = weight,
-                onValueChange = { weight = it },
+                onValueChange = {
+                    val newValue = it.toDoubleOrNull()
+                    if (newValue != null && newValue > 0 && newValue < 500)
+                        weight = it
+                },
                 label = { Text("Enter your weight (kg)") },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
 
-            OutlinedTextField(
-                value = gender,
-                onValueChange = { gender = it },
-                label = { Text("Enter your gender") },
-                modifier = Modifier.fillMaxWidth()
+            //drop down menu for gender selection
+            dropDownMenu(
+                selectedGender = gender,
+                setSelectedGender = { gender = it } // Lambda to update gender in HealthInfoSection
             )
 
             Spacer(modifier = Modifier.weight(1f)) // Push the button to the bottom
@@ -628,6 +649,15 @@ fun HealthInfoSection() {
                         editor.putString("weight", weight)
                         editor.putString("gender", gender)
                         editor.apply()
+
+                        val weightDouble = weight.toDoubleOrNull() ?: 70.0
+                        val isMale = when (gender) {
+                            "Male" -> true
+                            "Female" -> false
+                            else -> false //Assume non binary is female
+                        }
+                        PersonManager.setGender(isMale)
+                        PersonManager.setWeight(weightDouble)
                         showMessage = true
                     }
                 },
@@ -639,8 +669,61 @@ fun HealthInfoSection() {
             if (showMessage) {
                 Text(
                     text = "Details saved successfully!",
-                    color = Color.Green,
+                    color = Color.Gray,
                     modifier = Modifier.padding(top = 16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun dropDownMenu(
+    selectedGender: String,
+    setSelectedGender: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val list = listOf("Male", "Female", "Other (Biological Male)", "Other (Biological Female)")
+    var selectedItem by remember { mutableStateOf("") }
+
+    var textFiledSize by remember { mutableStateOf(Size.Zero)}
+
+    val icon = if (expanded) {
+        Icons.Filled.KeyboardArrowUp
+    } else {
+        Icons.Filled.KeyboardArrowDown
+    }
+
+    Column(modifier = Modifier.padding(20.dp)) {
+        OutlinedTextField(
+            value = selectedItem,
+            onValueChange = {selectedItem = it},
+            modifier = Modifier
+                .fillMaxWidth()
+                .onGloballyPositioned { coordinates ->
+                    textFiledSize = coordinates.size.toSize()
+                },
+            label = { Text("Select your gender") },
+            readOnly = true,
+            trailingIcon = {
+                Icon(icon,"",Modifier.clickable { expanded = !expanded })
+            }
+        )
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .width(with(LocalDensity.current) { textFiledSize.width.toDp() })
+        ) {
+            list.forEach { label ->
+                DropdownMenuItem(
+                    text = { Text(text = label) },
+                    onClick = {
+                    selectedItem = label
+                    expanded = false
+                    setSelectedGender(label)
+                    }
                 )
             }
         }
