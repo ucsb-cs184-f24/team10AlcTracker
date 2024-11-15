@@ -644,30 +644,6 @@ fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
 
 
 
-//@Composable
-//fun Mug(fillLevel: Float) {
-//    val mugWidth = 100.dp
-//    val mugHeight = 150.dp
-//
-//    Canvas(modifier = Modifier.size(mugWidth, mugHeight)) {
-//        // Draw the mug outline
-//        drawRoundRect(
-//            color = Color.Gray,
-//            size = size,
-//            style = Stroke(width = 8f)
-//        )
-//
-//        // Draw the filling (based on fill level, starting from the bottom)
-//        drawRect(
-//            color = Color.Blue,
-//            size = size.copy(height = size.height * fillLevel),
-//            topLeft = androidx.compose.ui.geometry.Offset(
-//                x = 0f,
-//                y = size.height * (1 - fillLevel)  // Starts from the bottom and goes upwards
-//            )
-//        )
-//    }
-//}
 
 @Composable
 fun Mug(fillLevel: Float) {
@@ -678,10 +654,12 @@ fun Mug(fillLevel: Float) {
     val glassThickness = 8f
     val frothHeight = 40.dp
 
-    // Add vertical padding or offset to move the mug down
-    Canvas(modifier = Modifier
-        .size(mugWidth + handleWidth, mugHeight + frothHeight)
-        .padding(top = 20.dp) // Adjust this value to move the mug down
+    // Add padding or offset to adjust the position of the mug
+    Canvas(
+        modifier = Modifier
+            .size(mugWidth + handleWidth, mugHeight + frothHeight)
+            .padding(top = 20.dp) // Adjust this to move vertically
+            .offset(x = 20.dp) // Adjust this to move horizontally
     ) {
         val mugBodyWidth = size.width - handleWidth.toPx()
         val mugBodyHeight = size.height - frothHeight.toPx()
