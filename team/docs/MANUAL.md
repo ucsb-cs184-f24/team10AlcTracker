@@ -3,3 +3,4 @@ BACtrack is an app that aims to keep people safe while drinking. The user will e
 
 
 # Intended User Audience
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in justo vel ipsum molestie lacinia. In non feugiat eros, ac aliquam massa. Sed ullamcorper neque ac erat elementum, sed rhoncus augue vulputate. Etiam blandit vel est at finibus. Pellentesque quam tellus, rhoncus nec nisi pulvinar, vestibulum vulputate eros. Praesent vestibulum malesuada sagittis. Nam rutrum semper risus, sollicitudin vulputate turpis mollis vel. Morbi imperdiet vestibulum libero in blandit. Morbi odio magna, convallis a nibh porttitor, pretium eleifend metus. Proin vehicula massa id quam malesuada, et pretium tortor posuere. In nisl mi, interdum id lectus in, vulputate tempor mauris. Nulla volutpat mauris tellus, sed venenatis tortor consectetur et. Morbi non vehicula lectus. Cras urna nulla, dapibus nec tellus vitae, porta ornare nunc. Fusce ac ante tortor.
