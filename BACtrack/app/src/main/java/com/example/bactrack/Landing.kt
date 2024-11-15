@@ -1,21 +1,27 @@
 package com.example.bactrack
 
-import android.annotation.SuppressLint
-import android.app.Person
-import com.example.bactrack.SessionManager.totalAlcMass
+//import androidx.compose.animation.core.animateColor
+
 import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,23 +30,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-
-import androidx.compose.foundation.lazy.LazyColumn
-
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBar
-import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SportsBar
+import androidx.compose.material3.*
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -54,71 +62,37 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-
-import androidx.compose.ui.res.painterResource
-
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardType
-
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
-import com.example.bactrack.ui.theme.BACtrackTheme
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Remove
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.googlefonts.Font
-import androidx.compose.ui.text.googlefonts.GoogleFont
-
-import androidx.compose.ui.unit.sp
-import com.example.bactrack.uiScreens.DisplayOne
-import androidx.compose.material3.*
-import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import com.example.bactrack.PersonManager.mainUser
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-
-
-
-
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.bactrack.SessionManager.totalAlcMass
+import com.example.bactrack.ui.theme.BACtrackTheme
 
 
 class Landing : ComponentActivity() {
@@ -139,12 +113,6 @@ class Landing : ComponentActivity() {
                         title = "Your History",
                         selectedIcon = Icons.Filled.SportsBar,
                         unselectedIcon = Icons.Outlined.SportsBar,
-                        hasNews = false
-                    ),
-                    BottomNavigationItem(
-                        title = "Settings",
-                        selectedIcon = Icons.Filled.Settings,
-                        unselectedIcon = Icons.Outlined.Settings,
                         hasNews = false
                     ),
                     BottomNavigationItem(
@@ -172,8 +140,7 @@ class Landing : ComponentActivity() {
                                     when(index) {
                                         0 -> navController.navigate("home")
                                         1 -> navController.navigate("history")
-                                        2 -> navController.navigate("settings")
-                                        3 -> navController.navigate("profile")
+                                        2 -> navController.navigate("profile")
                                     }
                                 }
                             )
@@ -186,7 +153,6 @@ class Landing : ComponentActivity() {
                         ) {
                             composable("home") { HomeScreen() }
                             composable("history") { HistoryScreen() }
-                            composable("settings") { SettingsScreen() }
                             composable("profile") { ProfileMenu() }
                         }
                     }
@@ -258,6 +224,101 @@ fun BottomNavigationBar(
 }
 
 @Composable
+fun AnimatedBackground(content: @Composable () -> Unit) {
+    // Infinite transition for animated background gradient
+    val infiniteTransition = rememberInfiniteTransition()
+    val color1 by infiniteTransition.animateColor(
+        initialValue = Color(0xFFFF6F61),
+        targetValue = Color(0xFFFECA57),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3400, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+    val color2 by infiniteTransition.animateColor(
+        initialValue = Color(0xFFFFAB91),
+        targetValue = Color(0xFFFF7043),
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 3400, easing = LinearEasing),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    // Define particle data class and particles setup
+    data class Particle(
+        val initialX: Float,
+        val initialY: Float,
+        val size: Float,
+        val color: Color,
+        val speedX: Float,
+        val speedY: Float
+    )
+
+    val particles = remember {
+        List(200) { // Adjust for more or fewer particles
+            Particle(
+                initialX = (0..1000).random().toFloat(),
+                initialY = (0..2000).random().toFloat(),
+                size = (5..15).random().toFloat(),
+                color = Color(0x80FFFFFF), // Semi-transparent white
+                speedX = (-1..1).random().toFloat(),
+                speedY = (-1..1).random().toFloat()
+            )
+        }
+    }
+
+    // Animate particle positions
+    val animatedParticles = particles.map { particle ->
+        val offsetX by infiniteTransition.animateFloat(
+            initialValue = particle.initialX,
+            targetValue = particle.initialX + particle.speedX * 700,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = (3000..7000).random(), easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+        val offsetY by infiniteTransition.animateFloat(
+            initialValue = particle.initialY,
+            targetValue = particle.initialY + particle.speedY * 700,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = (3000..7000).random(), easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+        particle.copy(initialX = offsetX, initialY = offsetY)
+    }
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Color.Transparent
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.linearGradient(
+                        colors = listOf(color1, color2),
+                        start = Offset(0f, 0f),
+                        end = Offset(1000f, 1000f)
+                    )
+                ),
+            contentAlignment = Alignment.Center
+        ) {
+            // Draw particles on top of the gradient
+            animatedParticles.forEach { particle ->
+                Box(
+                    modifier = Modifier
+                        .offset(particle.initialX.dp, particle.initialY.dp)
+                        .size(particle.size.dp)
+                        .background(particle.color, shape = CircleShape)
+                )
+            }
+            content() // Placeholder for screen-specific content
+        }
+    }
+}
+
+@Composable
 fun HomeScreen() {
     // Sample values for testing
     val userWeight = 70.0
@@ -268,24 +329,69 @@ fun HomeScreen() {
     val maxCounter = 10
     val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
 
-    // Infinite transition for animated background
+    // Infinite transition for animated background gradient
     val infiniteTransition = rememberInfiniteTransition()
     val color1 by infiniteTransition.animateColor(
-        initialValue = Color(0xFF00796B),
-        targetValue = Color(0xFF004D40),
+        initialValue = Color(0xFFFF6F61),
+        targetValue = Color(0xFFFECA57),
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 4000, easing = LinearEasing),
+            animation = tween(durationMillis = 3400, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
     val color2 by infiniteTransition.animateColor(
-        initialValue = Color(0xFF80CBC4),
-        targetValue = Color(0xFFA7FFEB),
+        initialValue = Color(0xFFFFAB91),
+        targetValue = Color(0xFFFF7043),
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 4000, easing = LinearEasing),
+            animation = tween(durationMillis = 3400, easing = LinearEasing),
             repeatMode = RepeatMode.Reverse
         )
     )
+
+    data class Particle(
+        val initialX: Float,
+        val initialY: Float,
+        val size: Float,
+        val color: Color,
+        val speedX: Float,
+        val speedY: Float
+    )
+
+
+    // Particles setup
+    val particles = remember {
+        List(200) { // Adjust for more or fewer particles
+            Particle(
+                initialX = (0..1000).random().toFloat(),
+                initialY = (0..2000).random().toFloat(),
+                size = (5..15).random().toFloat(),
+                color = Color(0x80FFFFFF), // Semi-transparent white
+                speedX = (-1..1).random().toFloat(),
+                speedY = (-1..1).random().toFloat()
+            )
+        }
+    }
+
+    // Animate particle positions
+    val animatedParticles = particles.map { particle ->
+        val offsetX by infiniteTransition.animateFloat(
+            initialValue = particle.initialX,
+            targetValue = particle.initialX + particle.speedX * 700, // Adjust range as needed
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = (3000..7000).random(), easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+        val offsetY by infiniteTransition.animateFloat(
+            initialValue = particle.initialY,
+            targetValue = particle.initialY + particle.speedY * 700, // Adjust range as needed
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = (3000..7000).random(), easing = LinearEasing),
+                repeatMode = RepeatMode.Reverse
+            )
+        )
+        particle.copy(initialX = offsetX, initialY = offsetY)
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -297,12 +403,22 @@ fun HomeScreen() {
                 .background(
                     brush = Brush.linearGradient(
                         colors = listOf(color1, color2),
-                        start = androidx.compose.ui.geometry.Offset.Zero,
-                        end = androidx.compose.ui.geometry.Offset.Infinite
+                        start = Offset(0f, 0f),
+                        end = Offset(1000f, 1000f) // Use finite values here
                     )
                 ),
             contentAlignment = Alignment.Center
         ) {
+            // Draw particles on top of the gradient
+            animatedParticles.forEach { particle ->
+                Box(
+                    modifier = Modifier
+                        .offset(particle.initialX.dp, particle.initialY.dp)
+                        .size(particle.size.dp)
+                        .background(particle.color, shape = CircleShape)
+                )
+            }
+
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -314,7 +430,7 @@ fun HomeScreen() {
                         initialValue = 0f,
                         targetValue = 360f,
                         animationSpec = infiniteRepeatable(
-                            animation = tween(durationMillis = 6000, easing = LinearEasing),
+                            animation = tween(durationMillis = 7000, easing = LinearEasing),
                             repeatMode = RepeatMode.Restart
                         )
                     )
@@ -426,6 +542,7 @@ fun HomeScreen() {
 
 
 
+
 @Composable
 fun Mug(fillLevel: Float) {
     val mugWidth = 100.dp
@@ -453,16 +570,24 @@ fun Mug(fillLevel: Float) {
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
 fun HistoryScreen() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = Color(0xFFADD8E6)
-    ) {
-        Text(
-            text = "History Screen",
-            color = Color.Black
-        )
+    AnimatedBackground {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "History Screen",
+                color = Color.White,
+                style = MaterialTheme.typography.headlineMedium
+            )
+            // Add other content for HistoryScreen here
+        }
     }
 }
+
 
 @Composable
 fun SettingsScreen() {
@@ -489,45 +614,47 @@ data class CurrentSession(
 
 @Composable
 fun ProfileMenu() {
-    val menuItems = listOf("Personal Information", "Health Info", "Preferences", "Account Details", "Settings", "Custom Sections")
-    var selectedMenuItem by remember { mutableStateOf("Personal Information") }
+    AnimatedBackground {
+        val menuItems = listOf("Personal Information", "Health Info", "Preferences", "Account Details", "Settings", "Custom Sections")
+        var selectedMenuItem by remember { mutableStateOf("Personal Information") }
 
-    Row(modifier = Modifier.fillMaxSize()) {
-        // Menu Column on the left
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(16.dp)
-                .width(150.dp)
-        ) {
-            menuItems.forEach { item ->
-                Button(
-                    onClick = { selectedMenuItem = item },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (selectedMenuItem == item) Color.Gray else Color.LightGray
-                    )
-                ) {
-                    Text(text = item)
+        Row(modifier = Modifier.fillMaxSize()) {
+            // Menu Column on the left
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(16.dp)
+                    .width(150.dp)
+            ) {
+                menuItems.forEach { item ->
+                    Button(
+                        onClick = { selectedMenuItem = item },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (selectedMenuItem == item) Color.Gray else Color.LightGray
+                        )
+                    ) {
+                        Text(text = item)
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
-                Spacer(modifier = Modifier.height(8.dp))
             }
-        }
 
-        // Display selected section
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(16.dp)
-                .weight(1f)
-        ) {
-            when (selectedMenuItem) {
-                "Personal Information" -> PersonalInformationSection()
-                "Health Info" -> HealthInfoSection()
-                "Preferences" -> PreferencesSection()
-                "Account Details" -> AccountDetailsSection()
-                "Settings" -> SettingsSection()
-                "Custom Sections" -> CustomSectionsSection()
+            // Display selected section
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(16.dp)
+                    .weight(1f)
+            ) {
+                when (selectedMenuItem) {
+                    "Personal Information" -> PersonalInformationSection()
+                    "Health Info" -> HealthInfoSection()
+                    "Preferences" -> PreferencesSection()
+                    "Account Details" -> AccountDetailsSection()
+                    "Settings" -> SettingsSection()
+                    "Custom Sections" -> CustomSectionsSection()
+                }
             }
         }
     }

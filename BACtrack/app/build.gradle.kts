@@ -88,6 +88,8 @@ dependencies {
     implementation ("androidx.compose.ui:ui:1.4.3") // Ensure this matches the version for animation
     implementation ("androidx.compose.material:material:1.4.3") // Update as needed
     implementation ("androidx.compose.animation:animation:1.4.0") // or the latest version
+    implementation ("androidx.compose.animation:animation:1.3.0") // Adjust version as per latest stable release
+
 
 
 
