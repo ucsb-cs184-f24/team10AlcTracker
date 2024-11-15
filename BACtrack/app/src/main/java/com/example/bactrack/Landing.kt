@@ -41,9 +41,12 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.LocalBar
+import androidx.compose.material.icons.filled.LocalDrink
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBar
+import androidx.compose.material.icons.filled.WineBar
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
@@ -62,6 +65,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -93,6 +98,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.SessionManager.totalAlcMass
 import com.example.bactrack.ui.theme.BACtrackTheme
+import kotlinx.coroutines.delay
 
 
 class Landing : ComponentActivity() {
@@ -320,14 +326,22 @@ fun AnimatedBackground(content: @Composable () -> Unit) {
 
 @Composable
 fun HomeScreen() {
-    // Sample values for testing
-    val userWeight = 70.0
-    val userSex = "male"
-    val totalAlcoholConsumed = totalAlcMass
-    val timeSinceDrinking = 1.0
     var counter by remember { mutableStateOf(0) }
     val maxCounter = 10
     val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
+
+    // For BAC calculation
+    val currentBAC by remember { derivedStateOf { SessionManager.bac } }
+    var showDrinkDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        while (true) {
+            delay(60_000L) // 5 minutes
+            SessionManager.recalculateBAC()
+        }
+    }
+
+
 
     // Infinite transition for animated background gradient
     val infiniteTransition = rememberInfiniteTransition()
@@ -464,12 +478,18 @@ fun HomeScreen() {
                 }
                 item {
                     Button(
-                        onClick = { if (counter < maxCounter) counter++ },
+                        onClick = { showDrinkDialog = true }, // Show the dialog when clicked
                         modifier = Modifier.padding(horizontal = 16.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00ACC1)),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+
                         shape = MaterialTheme.shapes.medium
                     ) {
-                        Text("Add a Drink", color = Color.White)
+                        Text(
+                            text = "Add a Drink",
+                            color = Color(0xFFFF7F50),
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Bold,
+                        )
                     }
                 }
                 item {
@@ -525,7 +545,7 @@ fun HomeScreen() {
                             .padding(16.dp)
                     ) {
                         Text(
-                            text = "Current BAC: ${calculateBAC(totalAlcoholConsumed, userWeight, userSex, timeSinceDrinking).format(3)}",
+                            text = "Current BAC: ${currentBAC.format(3)}",
                             color = Color(0xFF76FF03),
                             fontWeight = FontWeight.Bold,
                             fontSize = 26.sp,
@@ -534,10 +554,90 @@ fun HomeScreen() {
                     }
                 }
             }
+            if (showDrinkDialog) {
+                DrinkSelectionDialog(onDismiss = { showDrinkDialog = false })
+            }
         }
     }
 }
 
+@Composable
+fun DrinkSelectionDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("What did you drink?", fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                DrinkOptionRow(
+                    drinkType = "Beer",
+                    icon = Icons.Filled.SportsBar,
+                    onClick = {
+                        SessionManager.addDrink("beer")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Wine",
+                    icon = Icons.Filled.WineBar,
+                    onClick = {
+                        SessionManager.addDrink("wine")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Shot",
+                    icon = Icons.Filled.LocalDrink,
+                    onClick = {
+                        SessionManager.addDrink("shot")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Cocktail",
+                    icon = Icons.Filled.LocalBar,
+                    onClick = {
+                        SessionManager.addDrink("cocktail")
+                        onDismiss()
+                    }
+                )
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            Button(onClick = onDismiss,
+                   colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            ){
+                Text("Cancel",
+                    color = Color.White)
+            }
+        }
+    )
+}
+
+@Composable
+fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "$drinkType Icon",
+                modifier = Modifier.size(24.dp),
+                tint = Color.White
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(drinkType, color = Color.White)
+        }
+    }
+}
 
 
 
