@@ -76,6 +76,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -328,11 +329,12 @@ fun AnimatedBackground(content: @Composable () -> Unit) {
 @Composable
 fun HomeScreen() {
     var counter by remember { mutableStateOf(0) }
-    val maxCounter = 10
-    val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
+    val maxCounter = 0.2
+
 
     // For BAC calculation
     val currentBAC by remember { derivedStateOf { SessionManager.bac } }
+    val fillLevel by animateFloatAsState(targetValue = (currentBAC.toFloat() / maxCounter.toFloat()).coerceIn(0f, 1f))
     var showDrinkDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -664,6 +666,27 @@ fun Mug(fillLevel: Float) {
         val mugBodyWidth = size.width - handleWidth.toPx()
         val mugBodyHeight = size.height - frothHeight.toPx()
 
+
+        // Draw the filling (beer inside the mug)
+        val beerBrush = Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFFFFD54F), // Lighter yellow (beer top)
+                Color(0xFFFFA000)  // Darker golden (beer bottom)
+            ),
+            startY = size.height * (1 - fillLevel),
+            endY = size.height
+        )
+
+        drawRect(
+            brush = beerBrush,
+            size = androidx.compose.ui.geometry.Size(
+                mugBodyWidth,
+                mugBodyHeight * fillLevel
+            ),
+            topLeft = Offset(0f, mugBodyHeight * (1 - fillLevel)),
+        )
+
+
         // Draw the mug body (outer glass border) with a white outline
         drawRoundRect(
             color = Color.White, // White outline
@@ -672,15 +695,7 @@ fun Mug(fillLevel: Float) {
             style = Stroke(width = glassThickness)
         )
 
-        // Draw the filling (beer inside the mug)
-        drawRoundRect(
-            color = Color(0xFFFFD700), // Golden beer color
-            topLeft = Offset(0f, mugBodyHeight * (1 - fillLevel)),
-            size = androidx.compose.ui.geometry.Size(
-                mugBodyWidth,
-                mugBodyHeight * fillLevel
-            )
-        )
+
 
         // Draw the frothy top only if the mug is not empty
         if (fillLevel > 0f) {
@@ -745,6 +760,8 @@ fun Mug(fillLevel: Float) {
         )
     }
 }
+
+
 
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
