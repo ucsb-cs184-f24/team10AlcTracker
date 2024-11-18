@@ -441,24 +441,12 @@ fun HomeScreen() {
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 item {
-                    // Rotating logo with animation
-                    val infiniteRotation = rememberInfiniteTransition()
-                    val rotationAngle by infiniteRotation.animateFloat(
-                        initialValue = 0f,
-                        targetValue = 360f,
-                        animationSpec = infiniteRepeatable(
-                            animation = tween(durationMillis = 7000, easing = LinearEasing),
-                            repeatMode = RepeatMode.Restart
-                        )
-                    )
-
                     Image(
                         painter = painterResource(id = R.drawable.bactrack_logo_better),
                         contentDescription = "BACtrack Logo",
                         modifier = Modifier
                             .size(160.dp)
                             .padding(top = 24.dp)
-                            .rotate(rotationAngle) // Rotating effect
                     )
                 }
                 item {
