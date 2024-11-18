@@ -100,6 +100,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.SessionManager.totalAlcMass
 import com.example.bactrack.ui.theme.BACtrackTheme
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 
 class Landing : ComponentActivity() {
@@ -647,11 +648,26 @@ fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
 
 @Composable
 fun Mug(fillLevel: Float) {
-    val mugWidth = 100.dp
-    val mugHeight = 150.dp
+    val mugWidth = 120.dp
+    val mugHeight = 180.dp
+    val handleWidth = 40.dp
+    val handleHeight = 100.dp
+    val glassThickness = 8f
+    val frothHeight = 40.dp
 
-    Canvas(modifier = Modifier.size(mugWidth, mugHeight)) {
-        // Draw the beer filling
+    // Add padding or offset to adjust the position of the mug
+    Canvas(
+        modifier = Modifier
+            .size(mugWidth + handleWidth, mugHeight + frothHeight)
+            .padding(top = 20.dp) // Adjust this to move vertically
+            .offset(x = 20.dp) // Adjust this to move horizontally
+    ) {
+        val mugBodyWidth = size.width - handleWidth.toPx()
+        val mugBodyHeight = size.height - frothHeight.toPx()
+
+        // Draw the mug body (outer glass border) with a white outline
+
+        // Draw the filling (beer inside the mug)
         val beerBrush = Brush.verticalGradient(
             colors = listOf(
                 Color(0xFFFFD54F), // Lighter yellow (beer top)
@@ -663,31 +679,82 @@ fun Mug(fillLevel: Float) {
 
         drawRect(
             brush = beerBrush,
-            size = size.copy(height = size.height * fillLevel),
-            topLeft = androidx.compose.ui.geometry.Offset(
-                x = 0f,
-                y = size.height * (1 - fillLevel) // Starts from the bottom
-            )
+            size = androidx.compose.ui.geometry.Size(
+                mugBodyWidth,
+                mugBodyHeight * fillLevel
+            ),
+            topLeft = Offset(0f, mugBodyHeight * (1 - fillLevel)),
+        )
+        drawRoundRect(
+            color = Color.White, // White outline
+            size = androidx.compose.ui.geometry.Size(mugBodyWidth, mugBodyHeight),
+            cornerRadius = androidx.compose.ui.geometry.CornerRadius(20f, 20f),
+            style = Stroke(width = glassThickness)
         )
 
-        // Add foam effect only if the fill level is significant
-        if (fillLevel > 0.05f) {
-            drawRect(
-                color = Color.White,
-                size = size.copy(height = size.width / 10),
-                topLeft = androidx.compose.ui.geometry.Offset(
-                    x = 0f,
-                    y = size.height * (1 - fillLevel) - size.width / 10 // Foam sits right above the beer
+
+
+
+        // Draw the frothy top only if the mug is not empty
+        if (fillLevel > 0f) {
+            val frothRadius = frothHeight.toPx() / 2
+            val frothOffsetY = mugBodyHeight * (1 - fillLevel) - frothRadius * 0.5f // Closer to the filling
+
+            // Add a base layer of froth (randomized smaller bubbles)
+            for (i in 1..30) {
+                val randomX = Random.nextFloat() * 0.8f * mugBodyWidth + mugBodyWidth * 0.1f
+                val randomY = frothOffsetY + Random.nextFloat() * frothRadius - frothRadius / 2
+                val randomRadius = Random.nextFloat() * (frothRadius * 0.4f) + frothRadius * 0.2f
+                drawCircle(
+                    color = Color.White.copy(alpha = Random.nextFloat() * 0.2f + 0.7f),
+                    center = Offset(randomX, randomY),
+                    radius = randomRadius
                 )
+            }
+
+            // Add larger overlapping bubbles for a layered effect
+            val frothCircles = listOf(
+                Offset(mugBodyWidth * 0.15f, frothOffsetY),
+                Offset(mugBodyWidth * 0.35f, frothOffsetY - frothRadius / 3),
+                Offset(mugBodyWidth * 0.55f, frothOffsetY),
+                Offset(mugBodyWidth * 0.75f, frothOffsetY - frothRadius / 3),
+                Offset(mugBodyWidth * 0.85f, frothOffsetY)
             )
+
+            frothCircles.forEach { circleCenter ->
+                drawCircle(
+                    color = Color.White.copy(alpha = 0.95f),
+                    center = circleCenter,
+                    radius = frothRadius * 0.8f
+                )
+            }
         }
 
-        // Draw the mug outline (over the beer and foam)
-        drawRoundRect(
-            color = Color.Gray,
-            size = size,
-            style = Stroke(width = 8f),
-            cornerRadius = CornerRadius(12f, 12f)
+        // Draw the handle
+        val handleLeft = mugBodyWidth - glassThickness / 2
+        val handleTop = mugBodyHeight / 2 - handleHeight.toPx() / 2
+        drawArc(
+            color = Color.White, // White outline for the handle
+            startAngle = -90f,
+            sweepAngle = 180f,
+            useCenter = false,
+            style = Stroke(width = glassThickness),
+            topLeft = Offset(handleLeft, handleTop),
+            size = androidx.compose.ui.geometry.Size(handleWidth.toPx(), handleHeight.toPx())
+        )
+
+        // Add glass highlights (to make it shiny)
+        drawLine(
+            color = Color.White.copy(alpha = 0.4f),
+            start = Offset(mugBodyWidth * 0.1f, mugBodyHeight * 0.1f),
+            end = Offset(mugBodyWidth * 0.3f, mugBodyHeight * 0.9f),
+            strokeWidth = 4f
+        )
+        drawLine(
+            color = Color.White.copy(alpha = 0.4f),
+            start = Offset(mugBodyWidth * 0.7f, mugBodyHeight * 0.1f),
+            end = Offset(mugBodyWidth * 0.9f, mugBodyHeight * 0.9f),
+            strokeWidth = 4f
         )
     }
 }
