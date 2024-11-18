@@ -339,7 +339,7 @@ fun HomeScreen() {
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(60_000L) // 5 minutes
+            delay(60_000L) // 1 minute
             SessionManager.recalculateBAC()
         }
     }
@@ -646,6 +646,7 @@ fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
 
 
 
+
 @Composable
 fun Mug(fillLevel: Float) {
     val mugWidth = 120.dp
@@ -665,7 +666,6 @@ fun Mug(fillLevel: Float) {
         val mugBodyWidth = size.width - handleWidth.toPx()
         val mugBodyHeight = size.height - frothHeight.toPx()
 
-        // Draw the mug body (outer glass border) with a white outline
 
         // Draw the filling (beer inside the mug)
         val beerBrush = Brush.verticalGradient(
@@ -685,13 +685,15 @@ fun Mug(fillLevel: Float) {
             ),
             topLeft = Offset(0f, mugBodyHeight * (1 - fillLevel)),
         )
+
+
+        // Draw the mug body (outer glass border) with a white outline
         drawRoundRect(
             color = Color.White, // White outline
             size = androidx.compose.ui.geometry.Size(mugBodyWidth, mugBodyHeight),
             cornerRadius = androidx.compose.ui.geometry.CornerRadius(20f, 20f),
             style = Stroke(width = glassThickness)
         )
-
 
 
 
@@ -758,6 +760,7 @@ fun Mug(fillLevel: Float) {
         )
     }
 }
+
 
 
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
