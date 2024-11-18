@@ -58,6 +58,17 @@ class MainActivity : ComponentActivity() {
     }
 
     @Composable
+    fun AppLogo() {
+        Image(
+            painter = painterResource(id = R.drawable.bactrack_logo_better),
+            contentDescription = "BACtrack Logo",
+            modifier = Modifier
+                .size(260.dp)
+                .padding(top = 24.dp) // Optional padding for positioning
+        )
+    }
+
+    @Composable
     fun SignInScreen() {
         AnimatedBackground {
             Column(
@@ -67,6 +78,11 @@ class MainActivity : ComponentActivity() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Static Logo
+                AppLogo()
+
+                Spacer(modifier = Modifier.height(16.dp)) // Space below the logo
+
                 Text(
                     text = "Welcome to BACtrack",
                     style = MaterialTheme.typography.headlineLarge.copy(
