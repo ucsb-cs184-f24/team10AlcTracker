@@ -76,6 +76,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
@@ -327,11 +328,12 @@ fun AnimatedBackground(content: @Composable () -> Unit) {
 @Composable
 fun HomeScreen() {
     var counter by remember { mutableStateOf(0) }
-    val maxCounter = 10
-    val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
+    val maxCounter = 0.2
+
 
     // For BAC calculation
     val currentBAC by remember { derivedStateOf { SessionManager.bac } }
+    val fillLevel by animateFloatAsState(targetValue = (currentBAC.toFloat() / maxCounter.toFloat()).coerceIn(0f, 1f))
     var showDrinkDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -649,24 +651,48 @@ fun Mug(fillLevel: Float) {
     val mugHeight = 150.dp
 
     Canvas(modifier = Modifier.size(mugWidth, mugHeight)) {
-        // Draw the mug outline
-        drawRoundRect(
-            color = Color.Gray,
-            size = size,
-            style = Stroke(width = 8f)
+        // Draw the beer filling
+        val beerBrush = Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFFFFD54F), // Lighter yellow (beer top)
+                Color(0xFFFFA000)  // Darker golden (beer bottom)
+            ),
+            startY = size.height * (1 - fillLevel),
+            endY = size.height
         )
 
-        // Draw the filling (based on fill level, starting from the bottom)
         drawRect(
-            color = Color.Blue,
+            brush = beerBrush,
             size = size.copy(height = size.height * fillLevel),
             topLeft = androidx.compose.ui.geometry.Offset(
                 x = 0f,
-                y = size.height * (1 - fillLevel)  // Starts from the bottom and goes upwards
+                y = size.height * (1 - fillLevel) // Starts from the bottom
             )
+        )
+
+        // Add foam effect only if the fill level is significant
+        if (fillLevel > 0.05f) {
+            drawRect(
+                color = Color.White,
+                size = size.copy(height = size.width / 10),
+                topLeft = androidx.compose.ui.geometry.Offset(
+                    x = 0f,
+                    y = size.height * (1 - fillLevel) - size.width / 10 // Foam sits right above the beer
+                )
+            )
+        }
+
+        // Draw the mug outline (over the beer and foam)
+        drawRoundRect(
+            color = Color.Gray,
+            size = size,
+            style = Stroke(width = 8f),
+            cornerRadius = CornerRadius(12f, 12f)
         )
     }
 }
+
+
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
 fun HistoryScreen() {
