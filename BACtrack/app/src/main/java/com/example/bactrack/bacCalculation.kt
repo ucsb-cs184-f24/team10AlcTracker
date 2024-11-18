@@ -25,7 +25,12 @@ data class User(
     var name: String,
     var weight: Double,
     var sex: Boolean, // "male" or "female"
-    var totalAlcoholConsumed: Double
+    var totalAlcoholConsumed: Double,
+    var dateOfBirth: String,
+    var email: String,
+    var phoneNumber: Long,
+    var emergencyContactNum: Long
+
 )
 
 

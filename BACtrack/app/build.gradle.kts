@@ -89,6 +89,25 @@ dependencies {
     implementation ("androidx.compose.material:material:1.4.3") // Update as needed
     implementation ("androidx.compose.animation:animation:1.4.0") // or the latest version
 
+    // CORE
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
+    // CALENDAR
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.4")
+
+    // AndroidX Test Dependencies
+    androidTestImplementation("androidx.test.ext:junit:1.1.5") // Match the compatible version
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // Match the compatible version
+
+    // Unit Testing Dependencies
+    testImplementation("junit:junit:4.13.2")
+
+
+
+
+
 
 
 }
