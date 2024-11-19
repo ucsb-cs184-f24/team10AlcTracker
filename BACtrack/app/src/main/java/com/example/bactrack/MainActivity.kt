@@ -142,6 +142,7 @@ class MainActivity : ComponentActivity() {
 
                     val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                     val googleIdToken = googleIdTokenCredential.idToken
+
                     val displayName = googleIdTokenCredential.displayName
 
                     val intent = Intent(context, Landing::class.java).apply {
