@@ -27,5 +27,3 @@ data class User(
     var sex: Boolean, // "male" or "female"
     var totalAlcoholConsumed: Double
 )
-
-
