@@ -420,14 +420,14 @@ fun HomeScreen() {
 
 
     // For BAC calculation
-    //val currentBAC by remember { derivedStateOf { SessionManager.bac } }
-    //val fillLevel by animateFloatAsState(targetValue = (currentBAC.toFloat() / maxCounter.toFloat()).coerceIn(0f, 1f))
+    val currentBAC by remember { derivedStateOf { SessionManager.bac } }
+    val fillLevel by animateFloatAsState(targetValue = (currentBAC.toFloat() / maxCounter.toFloat()).coerceIn(0f, 1f))
     var showDrinkDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         while (true) {
             delay(60_000L) // 1 minute
-            //SessionManager.recalculateBAC()
+            SessionManager.recalculateBAC()
         }
     }
 
@@ -571,7 +571,7 @@ fun HomeScreen() {
                     }
                 }
                 item {
-                    //Mug(fillLevel = fillLevel)
+                    Mug(fillLevel = fillLevel)
                     Spacer(modifier = Modifier.height(20.dp))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -623,8 +623,7 @@ fun HomeScreen() {
                             .padding(16.dp)
                     ) {
                         Text(
-                            //text = "Current BAC: ${currentBAC.format(3)}",
-                            text = "Current BAC: dummy",
+                            text = "Current BAC: ${currentBAC.format(3)}",
                             color = Color(0xFF76FF03),
                             fontWeight = FontWeight.Bold,
                             fontSize = 26.sp,
@@ -640,59 +639,60 @@ fun HomeScreen() {
     }
 }
 
+
 @Composable
 fun DrinkSelectionDialog(onDismiss: () -> Unit) {
-//    AlertDialog(
-//        onDismissRequest = onDismiss,
-//        title = {
-//            Text("What did you drink?", fontWeight = FontWeight.Bold)
-//        },
-//        text = {
-//            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-//                DrinkOptionRow(
-//                    drinkType = "Beer",
-//                    icon = Icons.Filled.SportsBar,
-//                    onClick = {
-//                        SessionManager.addDrink("beer")
-//                        onDismiss()
-//                    }
-//                )
-//                DrinkOptionRow(
-//                    drinkType = "Wine",
-//                    icon = Icons.Filled.WineBar,
-//                    onClick = {
-//                        SessionManager.addDrink("wine")
-//                        onDismiss()
-//                    }
-//                )
-//                DrinkOptionRow(
-//                    drinkType = "Shot",
-//                    icon = Icons.Filled.LocalDrink,
-//                    onClick = {
-//                        SessionManager.addDrink("shot")
-//                        onDismiss()
-//                    }
-//                )
-//                DrinkOptionRow(
-//                    drinkType = "Cocktail",
-//                    icon = Icons.Filled.LocalBar,
-//                    onClick = {
-//                        SessionManager.addDrink("cocktail")
-//                        onDismiss()
-//                    }
-//                )
-//            }
-//        },
-//        confirmButton = {},
-//        dismissButton = {
-//            Button(onClick = onDismiss,
-//                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-//            ){
-//                Text("Cancel",
-//                    color = Color.White)
-//            }
-//        }
-//    )
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("What did you drink?", fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                DrinkOptionRow(
+                    drinkType = "Beer",
+                    icon = Icons.Filled.SportsBar,
+                    onClick = {
+                        SessionManager.addDrink("beer")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Wine",
+                    icon = Icons.Filled.WineBar,
+                    onClick = {
+                        SessionManager.addDrink("wine")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Shot",
+                    icon = Icons.Filled.LocalDrink,
+                    onClick = {
+                        SessionManager.addDrink("shot")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Cocktail",
+                    icon = Icons.Filled.LocalBar,
+                    onClick = {
+                        SessionManager.addDrink("cocktail")
+                        onDismiss()
+                    }
+                )
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            Button(onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            ){
+                Text("Cancel",
+                    color = Color.White)
+            }
+        }
+    )
 }
 
 @Composable
