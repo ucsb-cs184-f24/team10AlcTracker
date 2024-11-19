@@ -11,7 +11,7 @@ fun calculateBAC(totalAlcoholConsumed: Double, weight: Double, sex: String, time
     val beta = 0.015  // Alcohol elimination rate
 
     // Convert weight from kg to grams
-    val weightInGrams = weight * 1000 + currentSession.numBeers + mainUser.totalAlcoholConsumed
+    val weightInGrams = weight * 1000
 
     // Calculate BAC
     val bac = (totalAlcoholConsumed / (r * weightInGrams)) - (beta * time)
@@ -25,12 +25,5 @@ data class User(
     var name: String,
     var weight: Double,
     var sex: Boolean, // "male" or "female"
-    var totalAlcoholConsumed: Double,
-    var dateOfBirth: String,
-    var email: String,
-    var phoneNumber: Long,
-    var emergencyContactNum: Long
-
+    var totalAlcoholConsumed: Double
 )
-
-

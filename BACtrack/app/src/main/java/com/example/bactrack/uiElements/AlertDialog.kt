@@ -1,3 +1,4 @@
+
 package com.example.bactrack.uiElements
 
 
@@ -59,10 +60,7 @@ fun AlertDialog(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        onClick = {
-                            SessionManager.currentSession = SessionManager.currentSession.copy(numBeers =SessionManager.currentSession.numBeers + 1)
-                                //add logic to update BAC here
-                                  },
+                        onClick = { SessionManager.addDrink("beer") },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
@@ -70,11 +68,9 @@ fun AlertDialog(
                         Icon(imageVector = Icons.Filled.SportsBar, contentDescription = "Beer Icon")
                         Text(text = "Beer")
                     }
+
                     Button(
-                        onClick = {
-                            SessionManager.currentSession = SessionManager.currentSession.copy(numWine =SessionManager.currentSession.numWine + 1)
-                                  //add logic to update BAC here
-                                  },
+                        onClick = { SessionManager.addDrink("wine") },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
@@ -88,10 +84,7 @@ fun AlertDialog(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        onClick = {
-                            SessionManager.currentSession = SessionManager.currentSession.copy(numShots =SessionManager.currentSession.numShots + 1)
-                                  //add logic to update BAC here
-                                  },
+                        onClick = { SessionManager.addDrink("shot") },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
@@ -99,23 +92,17 @@ fun AlertDialog(
                         Icon(imageVector = Icons.Filled.LocalDrink, contentDescription = "Shot Icon")
                         Text(text = "Shot")
                     }
+
                     Button(
-                        onClick = {
-                            SessionManager.currentSession = SessionManager.currentSession.copy(numCocktails =SessionManager.currentSession.numCocktails + 1)
-                            //add logic to update BAC here
-                        },
+                        onClick = { SessionManager.addDrink("cocktail") },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
                     ) {
                         Icon(imageVector = Icons.Filled.LocalBar, contentDescription = "Cocktail Icon")
-                        Text(text = "Cktl")
-
+                        Text(text = "Cocktail")
                     }
                 }
-
-
-
             }
         }
     )

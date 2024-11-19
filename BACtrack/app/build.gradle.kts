@@ -53,9 +53,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth-ktx")
     implementation("androidx.navigation:navigation-compose:2.6.0")
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.4")
-    implementation("androidx.compose.material:material-icons-extended:1.5.0")
-    implementation("androidx.compose.ui:ui-text-google-fonts:1.7.4")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -72,42 +69,21 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    testImplementation(libs.junit)
+    implementation("androidx.compose.animation:animation:1.4.3")
+    implementation("androidx.compose.material:material:1.4.3")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
+    androidTestImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.01"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation ("androidx.compose.material3:material3:<latest_version>")
-    implementation( "androidx.compose.animation:animation:1.4.3") // Replace with the latest version if needed
-    implementation ("androidx.compose.ui:ui:1.4.3") // Ensure this matches the version for animation
-    implementation ("androidx.compose.material:material:1.4.3") // Update as needed
-    implementation ("androidx.compose.animation:animation:1.4.0") // or the latest version
-
-    // CORE
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
-    // CALENDAR
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:1.0.2")
-
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.7.4")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.7.4")
-
-    // AndroidX Test Dependencies
-    androidTestImplementation("androidx.test.ext:junit:1.1.5") // Match the compatible version
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1") // Match the compatible version
-
-    // Unit Testing Dependencies
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     testImplementation("junit:junit:4.13.2")
-
-
-
-
-
-
-
 }
