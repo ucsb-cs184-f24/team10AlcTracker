@@ -1,5 +1,4 @@
 package com.example.bactrack
-
 import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.os.Bundle
@@ -7,11 +6,21 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,17 +30,31 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.LocalBar
+import androidx.compose.material.icons.filled.LocalDrink
+import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBar
+
+
+import androidx.compose.material.icons.filled.WineBar
+
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SportsBar
+import androidx.compose.material3.*
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Button
@@ -45,13 +68,26 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+
+
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.LocalContext
@@ -179,6 +215,17 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
@@ -417,8 +464,6 @@ fun AnimatedBackground(content: @Composable () -> Unit) {
 fun HomeScreen() {
     var counter by remember { mutableStateOf(0) }
     val maxCounter = 0.2
-
-
     // For BAC calculation
     val currentBAC by remember { derivedStateOf { SessionManager.bac } }
     val fillLevel by animateFloatAsState(targetValue = (currentBAC.toFloat() / maxCounter.toFloat()).coerceIn(0f, 1f))
@@ -635,6 +680,85 @@ fun HomeScreen() {
             if (showDrinkDialog) {
                 DrinkSelectionDialog(onDismiss = { showDrinkDialog = false })
             }
+
+        }
+    }
+}
+
+@Composable
+fun DrinkSelectionDialog(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text("What did you drink?", fontWeight = FontWeight.Bold)
+        },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                DrinkOptionRow(
+                    drinkType = "Beer",
+                    icon = Icons.Filled.SportsBar,
+                    onClick = {
+                        SessionManager.addDrink("beer")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Wine",
+                    icon = Icons.Filled.WineBar,
+                    onClick = {
+                        SessionManager.addDrink("wine")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Shot",
+                    icon = Icons.Filled.LocalDrink,
+                    onClick = {
+                        SessionManager.addDrink("shot")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Cocktail",
+                    icon = Icons.Filled.LocalBar,
+                    onClick = {
+                        SessionManager.addDrink("cocktail")
+                        onDismiss()
+                    }
+                )
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            Button(onClick = onDismiss,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+            ){
+                Text("Cancel",
+                    color = Color.White)
+            }
+        }
+    )
+}
+
+@Composable
+fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "$drinkType Icon",
+                modifier = Modifier.size(24.dp),
+                tint = Color.White
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(drinkType, color = Color.White)
         }
     }
 }
@@ -717,6 +841,7 @@ fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
         }
     }
 }
+
 
 
 
@@ -909,10 +1034,10 @@ fun ProfileMenu() {
                     )
                 ) {
                     Text(text = item)
+
                 }
-                Spacer(modifier = Modifier.height(8.dp))
             }
-        }
+
 
         // Display selected section
         Column(
@@ -928,6 +1053,8 @@ fun ProfileMenu() {
 //                "Account Details" -> AccountDetailsSection()
 //                "Settings" -> SettingsSection()
 //                "Custom Sections" -> CustomSectionsSection()
+
+
             }
         }
     }
@@ -1285,9 +1412,9 @@ fun dropDownMenu(
                 DropdownMenuItem(
                     text = { Text(text = label) },
                     onClick = {
-                    selectedItem = label
-                    expanded = false
-                    setSelectedGender(label)
+                        selectedItem = label
+                        expanded = false
+                        setSelectedGender(label)
                     }
                 )
             }
@@ -1500,6 +1627,7 @@ fun EditablePhoneField(
             }
         },
             modifier = Modifier.fillMaxWidth()
+
     )
 }
 
@@ -1530,8 +1658,4 @@ fun EditableProfileField(label: String,
         }
     )
 }
-
-
-
-
 

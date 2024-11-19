@@ -73,6 +73,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -88,6 +89,10 @@ dependencies {
     implementation ("androidx.compose.ui:ui:1.4.3") // Ensure this matches the version for animation
     implementation ("androidx.compose.material:material:1.4.3") // Update as needed
     implementation ("androidx.compose.animation:animation:1.4.0") // or the latest version
+    implementation ("androidx.compose.animation:animation:1.3.0") // Adjust version as per latest stable release
+
+
+
 
     // CORE
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.0.2")
