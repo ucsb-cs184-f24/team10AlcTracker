@@ -77,22 +77,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 
 
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.Brush
+
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.ui.theme.BACtrackTheme
@@ -103,14 +96,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.compose.material3.*
 import androidx.compose.animation.*
 import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -211,6 +200,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -685,60 +675,7 @@ fun HomeScreen() {
     }
 }
 
-@Composable
-fun DrinkSelectionDialog(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text("What did you drink?", fontWeight = FontWeight.Bold)
-        },
-        text = {
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                DrinkOptionRow(
-                    drinkType = "Beer",
-                    icon = Icons.Filled.SportsBar,
-                    onClick = {
-                        SessionManager.addDrink("beer")
-                        onDismiss()
-                    }
-                )
-                DrinkOptionRow(
-                    drinkType = "Wine",
-                    icon = Icons.Filled.WineBar,
-                    onClick = {
-                        SessionManager.addDrink("wine")
-                        onDismiss()
-                    }
-                )
-                DrinkOptionRow(
-                    drinkType = "Shot",
-                    icon = Icons.Filled.LocalDrink,
-                    onClick = {
-                        SessionManager.addDrink("shot")
-                        onDismiss()
-                    }
-                )
-                DrinkOptionRow(
-                    drinkType = "Cocktail",
-                    icon = Icons.Filled.LocalBar,
-                    onClick = {
-                        SessionManager.addDrink("cocktail")
-                        onDismiss()
-                    }
-                )
-            }
-        },
-        confirmButton = {},
-        dismissButton = {
-            Button(onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-            ){
-                Text("Cancel",
-                    color = Color.White)
-            }
-        }
-    )
-}
+
 
 @Composable
 fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
@@ -819,28 +756,6 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
     )
 }
 
-@Composable
-fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
-        shape = MaterialTheme.shapes.medium
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = icon,
-                contentDescription = "$drinkType Icon",
-                modifier = Modifier.size(24.dp),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(drinkType, color = Color.White)
-        }
-    }
-}
 
 
 
@@ -1034,10 +949,10 @@ fun ProfileMenu() {
                     )
                 ) {
                     Text(text = item)
-
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
-
+        }
 
         // Display selected section
         Column(
@@ -1053,8 +968,6 @@ fun ProfileMenu() {
 //                "Account Details" -> AccountDetailsSection()
 //                "Settings" -> SettingsSection()
 //                "Custom Sections" -> CustomSectionsSection()
-
-
             }
         }
     }
@@ -1067,13 +980,21 @@ fun PersonalInformationSection() {
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     var name by remember { mutableStateOf(PersonManager.mainUser.name) }
     var dob by remember { mutableStateOf(PersonManager.mainUser.dateOfBirth) }
-    var email by remember { mutableStateOf(PersonManager.mainUser.email)}
+    var email by remember { mutableStateOf(PersonManager.mainUser.email) }
     var phone by remember { mutableStateOf(TextFieldValue(formatPhoneNumber(PersonManager.mainUser.phoneNumber.toString()))) }
-    var emergencyNumber by remember { mutableStateOf(TextFieldValue(formatPhoneNumber(PersonManager.mainUser.emergencyContactNum.toString()))) }
+    var emergencyNumber by remember {
+        mutableStateOf(
+            TextFieldValue(
+                formatPhoneNumber(
+                    PersonManager.mainUser.emergencyContactNum.toString()
+                )
+            )
+        )
+    }
 
     val calendarState = rememberSheetState()
     //convert Dob to displayable format
-    val formattedDob = remember(dob) {formatDate(dob)}
+    val formattedDob = remember(dob) { formatDate(dob) }
 
     val focusManager = LocalFocusManager.current
 
@@ -1139,7 +1060,7 @@ fun PersonalInformationSection() {
                     Log.d("SelectedDate", "$date")
                 }
             )
-        ////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////////
             EditableProfileField(
                 label = "Email",
                 value = email,
@@ -1157,7 +1078,8 @@ fun PersonalInformationSection() {
                 onValueChange = { newPhone ->
                     phone = newPhone // Update intermediate state
                     if (newPhone.text.length == 14) { // Update only if valid
-                        PersonManager.mainUser.phoneNumber = newPhone.text.filter { it.isDigit() }.toLong()
+                        PersonManager.mainUser.phoneNumber =
+                            newPhone.text.filter { it.isDigit() }.toLong()
                     }
                 }
             )
@@ -1169,13 +1091,15 @@ fun PersonalInformationSection() {
                 onValueChange = { newEmergencyNumber ->
                     emergencyNumber = newEmergencyNumber // Update intermediate state
                     if (newEmergencyNumber.text.length == 14) { // Update only if valid
-                        PersonManager.mainUser.emergencyContactNum = newEmergencyNumber.text.filter { it.isDigit() }.toLong()
+                        PersonManager.mainUser.emergencyContactNum =
+                            newEmergencyNumber.text.filter { it.isDigit() }.toLong()
                     }
                 }
             )
         }
     }
 }
+
 //Helper function for formatDate
 fun formatDate(date: String): String {
     return try {
@@ -1195,8 +1119,20 @@ fun formatPhoneNumber(input: String): String {
     val digits = input.filter { it.isDigit() }
     // format as (XXX) XXX-XXXX
     return when {
-        digits.length >= 10 -> "(${digits.substring(0, 3)}) ${digits.substring(3, 6)}-${digits.substring(6, 10)}"
-        digits.length >= 6 -> "(${digits.substring(0, 3)}) ${digits.substring(3, 6)}-${digits.substring(6)}"
+        digits.length >= 10 -> "(${digits.substring(0, 3)}) ${
+            digits.substring(
+                3,
+                6
+            )
+        }-${digits.substring(6, 10)}"
+
+        digits.length >= 6 -> "(${digits.substring(0, 3)}) ${
+            digits.substring(
+                3,
+                6
+            )
+        }-${digits.substring(6)}"
+
         digits.length >= 3 -> "(${digits.substring(0, 3)}) ${digits.substring(3)}"
         else -> digits
     }
@@ -1219,10 +1155,6 @@ fun applyPhoneMask(input: String): String {
 }
 
 
-
-
-
-
 @Composable
 fun ClickableField(label: String, value: String, onClick: () -> Unit) {
     Column(
@@ -1240,7 +1172,11 @@ fun ClickableField(label: String, value: String, onClick: () -> Unit) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f), MaterialTheme.shapes.small)
+                .border(
+                    1.dp,
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    MaterialTheme.shapes.small
+                )
                 .padding(12.dp)
                 .align(Alignment.CenterHorizontally)
         ) {
@@ -1264,7 +1200,12 @@ fun ClickableField(label: String, value: String, onClick: () -> Unit) {
 
 // Helper Composable for Profile Fields
 @Composable
-fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange: (String) -> Unit) {
+fun ProfileField(
+    label: String,
+    value: String,
+    isEditing: Boolean,
+    onValueChange: (String) -> Unit
+) {
     if (isEditing) {
         OutlinedTextField(
             value = value,
@@ -1282,13 +1223,18 @@ fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HealthInfoSection() {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     var weight by remember { mutableStateOf(sharedPreferences.getString("weight", "") ?: "") }
-    var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "Female") ?: "Female") }
+    var gender by remember {
+        mutableStateOf(
+            sharedPreferences.getString("gender", "Female") ?: "Female"
+        )
+    }
     var showMessage by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
     Surface(
@@ -1319,17 +1265,20 @@ fun HealthInfoSection() {
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done),
-                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus()} ) ,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                 leadingIcon = {
-                    Icon(Icons.Filled.FitnessCenter , contentDescription = "Weight Icon")
+                    Icon(Icons.Filled.FitnessCenter, contentDescription = "Weight Icon")
                 }
             )
 
             //drop down menu for gender selection
             dropDownMenu(
                 selectedGender = gender,
-                setSelectedGender = { gender = it } // Lambda to update gender in HealthInfoSection
+                setSelectedGender = {
+                    gender = it
+                } // Lambda to update gender in HealthInfoSection
             )
 
             Spacer(modifier = Modifier.weight(1f)) // Push the button to the bottom
@@ -1378,7 +1327,7 @@ fun dropDownMenu(
     val list = listOf("Male", "Female", "Other (Biological Male)", "Other (Biological Female)")
     var selectedItem by remember { mutableStateOf("") }
 
-    var textFiledSize by remember { mutableStateOf(Size.Zero)}
+    var textFiledSize by remember { mutableStateOf(Size.Zero) }
 
     val icon = if (expanded) {
         Icons.Filled.KeyboardArrowUp
@@ -1389,7 +1338,7 @@ fun dropDownMenu(
     Column(modifier = Modifier.padding(20.dp)) {
         OutlinedTextField(
             value = selectedItem,
-            onValueChange = {selectedItem = it},
+            onValueChange = { selectedItem = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
@@ -1398,7 +1347,7 @@ fun dropDownMenu(
             label = { Text("Select your gender") },
             readOnly = true,
             trailingIcon = {
-                Icon(icon,"",Modifier.clickable { expanded = !expanded })
+                Icon(icon, "", Modifier.clickable { expanded = !expanded })
             }
         )
 
@@ -1541,6 +1490,7 @@ fun PreferencesSection() {
 
 
 }
+
 @Composable
 fun SwitchSetting(x0: String, x1: Boolean, content: @Composable () -> Unit) {
     TODO("Not yet implemented")
@@ -1615,29 +1565,40 @@ fun EditablePhoneField(
         onValueChange = { newValue ->
             val digits = newValue.text.filter { it.isDigit() } // Extract only digits
             val formattedPhone = applyPhoneMask(digits) // Apply the mask
-            onValueChange(TextFieldValue(formattedPhone, TextRange(formattedPhone.length))) // Update text and move cursor to the end
+            onValueChange(
+                TextFieldValue(
+                    formattedPhone,
+                    TextRange(formattedPhone.length)
+                )
+            ) // Update text and move cursor to the end
         },
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
         leadingIcon = {
             when (label) {
                 "Phone Number" -> Icon(Icons.Filled.Call, contentDescription = "Phone Icon")
-                "Emergancy Contact" -> Icon(Icons.Filled.Emergency, contentDescription = "EC Icon")
+                "Emergancy Contact" -> Icon(
+                    Icons.Filled.Emergency,
+                    contentDescription = "EC Icon"
+                )
+
                 else -> Icon(Icons.Filled.Info, contentDescription = "Default Icon")
             }
         },
-            modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
 
     )
 }
 
 
 @Composable
-fun EditableProfileField(label: String,
-                         value: String,
-                         keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-                         maxLength: Int? = null,
-                         onValueChange: (String) -> Unit) {
+fun EditableProfileField(
+    label: String,
+    value: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    maxLength: Int? = null,
+    onValueChange: (String) -> Unit
+) {
     OutlinedTextField(
         value = value,
         onValueChange = { newValue ->
@@ -1658,4 +1619,5 @@ fun EditableProfileField(label: String,
         }
     )
 }
+
 
