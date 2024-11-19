@@ -598,7 +598,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
         confirmButton = {},
         dismissButton = {
             Button(onClick = onDismiss,
-                   colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
             ){
                 Text("Cancel",
                     color = Color.White)
@@ -1031,9 +1031,9 @@ fun dropDownMenu(
                 DropdownMenuItem(
                     text = { Text(text = label) },
                     onClick = {
-                    selectedItem = label
-                    expanded = false
-                    setSelectedGender(label)
+                        selectedItem = label
+                        expanded = false
+                        setSelectedGender(label)
                     }
                 )
             }
@@ -1236,4 +1236,3 @@ fun EditableProfileField(label: String, value: String, isEditing: Boolean = true
         Text(text = "$label: $value", modifier = Modifier.fillMaxWidth())
     }
 }
-
