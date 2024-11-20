@@ -5,12 +5,13 @@ Scrum Master: Elijah
 
 # Attendence
 
-## 
-Maya
-Madison
-Elijah
-Marianna
-Konark
+- Maya
+- Madison
+- Elijah
+- Marianna
+- Konark
+
+# Meeting Notes
 
 - Checked in on project progress from individual members
 - Divided Sec07 Deliverable Work
