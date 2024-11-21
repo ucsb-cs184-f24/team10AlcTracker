@@ -933,7 +933,7 @@ fun HistoryItem(session: BACSession) {
                 color = Color.White.copy(alpha = 1f) // Semi-transparent text
             )
             Text(
-                text = "Duration: ${session.startTime-session.endTime} minutes",
+                text = "Duration: ${formatTimestamp(session.endTime-session.startTime)} minutes",
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White.copy(alpha = 1f) // Semi-transparent text
             )
