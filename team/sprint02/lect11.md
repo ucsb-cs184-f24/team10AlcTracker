@@ -1,6 +1,6 @@
-# Lecture 8 Meeting
+# Lecture 11 Meeting
 
-## Scribe: Elijah
+## Scribe: Elijah Anderson
 ## Scrum Master: Ivan Hernandez 
 # Attendance:
 Madison, Elijah, Ivan, Mariana, Kornark

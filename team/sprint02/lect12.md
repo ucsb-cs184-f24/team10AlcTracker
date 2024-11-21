@@ -1,7 +1,7 @@
-# Lecture 12 Meeting
+# Lecture 12 Meeting – Nov 6, 2024
 
-## Scribe: Elijah
-## Scrum Master: Mariana
+## Scribe: Elijah Anderson
+## Scrum Master: Mariana Rosillo
 # Attendance:
 Madison, Elijah, Ivan, Mariana, Madison, Konark
 
@@ -11,7 +11,6 @@ SUMMARY: Check ins for current projects and end goals
 - Done: Half the tests, added validation for all data fields
 - Doing: Other half of tests
 - Roadblocks: none right now
-
 
 ## Mariana Rosillo
 - Done: Completed BAC calculation with correct info and did mug design for main page
