@@ -10,7 +10,7 @@
 
 ### Leadership
 - Scrum master: Madison Long
-- Scribe    : Mariana Rosillo
+- Scribe      : Mariana Rosillo
 
 ### Notes
 - Mariana Rosillo
