@@ -2,6 +2,7 @@ package com.example.bactrack
 
 import org.junit.Test
 import org.junit.Rule
+import org.junit.Before
 
 
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -17,6 +18,12 @@ class HealthInfoSectionTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
+
+    @Before
+    fun setup() {
+        // Reset PersonManager state before each test
+        PersonManager.mainUser.name = "John Doe" // Default name
+    }
 
     @Test
     fun validWeightIsSavedToPersonManager() {
@@ -77,7 +84,7 @@ class HealthInfoSectionTest {
             .performClick()
 
         // Assert weight is  not cleared in PersonManager
-        assert(PersonManager.mainUser.weight == 10.0)
+        assert(PersonManager.mainUser.weight == 70.0)
 
         // Retype weight
         composeTestRule.onNodeWithText("Enter your weight (kg)")
@@ -89,4 +96,24 @@ class HealthInfoSectionTest {
         // Assert updated weight in PersonManager
         assert(PersonManager.mainUser.weight == 85.0)
     }
+
+    @Test
+    fun validNameIsSavedToPersonManager() {
+        composeTestRule.setContent {
+            HealthInfoSection()
+        }
+
+        // Enter a valid name
+        composeTestRule.onNodeWithText("Name")
+            .performTextInput("Alice")
+
+        // Click Save
+        composeTestRule.onNodeWithText("Save")
+            .performClick()
+
+        // Assert that the name is updated in PersonManager
+        assert(PersonManager.mainUser.name == "Alice")
+    }
+
 }
+

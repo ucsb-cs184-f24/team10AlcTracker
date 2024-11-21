@@ -1037,6 +1037,12 @@ fun PersonalInformationSection() {
                     name = newName
                     PersonManager.mainUser.name = newName
                 }
+                else if (newName.length > 20) {
+                    PersonManager.mainUser.name = newName.substring(0, 20)
+                }
+                else {
+                    PersonManager.mainUser.name = ""
+                }
             }
 
 
