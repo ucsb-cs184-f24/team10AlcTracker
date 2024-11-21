@@ -34,6 +34,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Card
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -163,6 +164,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
@@ -226,6 +228,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.SessionManager.totalAlcMass
 import com.example.bactrack.ui.theme.BACtrackTheme
 import kotlinx.coroutines.delay
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.random.Random
 
 class Landing : ComponentActivity() {
@@ -288,7 +293,7 @@ class Landing : ComponentActivity() {
                             modifier = Modifier.padding(paddingValues)
                         ) {
                             composable("home") { HomeScreen() }
-                            composable("history") { HistoryScreen() }
+                            composable("history") { HistoryScreen(SessionManager.historyList) }
                             composable("profile") { ProfileMenu() }
                         }
                     }
@@ -578,7 +583,7 @@ fun HomeScreen() {
                 item {
                     Text(
                         text = "\uD83C\uDF7B Welcome to BACtrack! \uD83C\uDF77 ",
-                        color = Color.White,
+                        color = Color.White.copy(alpha = 1f),
                         fontWeight = FontWeight.Bold,
                         fontSize = 22.sp,
                         modifier = Modifier
@@ -603,7 +608,7 @@ fun HomeScreen() {
                     ) {
                         Text(
                             text = "Add a Drink",
-                            color = Color(0xFFFF7F50),
+                            color = Color(0xFFFF7F50).copy(alpha = 1f),
                             fontSize = 22.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -611,65 +616,41 @@ fun HomeScreen() {
                 }
                 item {
                     Mug(fillLevel = fillLevel)
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    ) {
-                        Button(
-                            onClick = { if (counter < maxCounter) counter++ },
-                            modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00ACC1)),
-                            shape = MaterialTheme.shapes.medium
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Add More", color = Color.White)
-                        }
-                        Button(
-                            onClick = { if (counter > 0) counter-- },
-                            modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00838F)),
-                            shape = MaterialTheme.shapes.medium
-                        ) {
-                            Icon(Icons.Default.Remove, contentDescription = null, tint = Color.White)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Reduce", color = Color.White)
-                        }
-                    }
+
                 }
                 item {
                     Box(
                         modifier = Modifier
-                            .padding(16.dp)
-                            .background(Color(0xFF1B5E20), shape = MaterialTheme.shapes.medium)
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Total Drinks: ${SessionManager.totalDrinks}",
-                            color = Color(0xFFFFD700),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 26.sp,
-                            fontFamily = FontFamily.Serif
-                        )
-                    }
-                }
-                item {
-                    Box(
-                        modifier = Modifier
-                            .padding(16.dp)
-                            .background(Color(0xFF263238), shape = MaterialTheme.shapes.medium)
+
+                            .background(Color.White, shape = MaterialTheme.shapes.medium)
                             .padding(16.dp)
                     ) {
                         Text(
                             text = "Current BAC: ${currentBAC.format(3)}",
-                            color = Color(0xFF76FF03),
+                            color = Color(0xFFFF7F50).copy(alpha = 1f),
                             fontWeight = FontWeight.Bold,
                             fontSize = 26.sp,
                             fontFamily = FontFamily.Serif
                         )
                     }
                 }
+                item {
+                    Box(
+                        modifier = Modifier
+
+                            .background(Color.White, shape = MaterialTheme.shapes.medium)
+                            .padding(16.dp)
+                    ) {
+                        Text(
+                            text = "Total Drinks: ${SessionManager.totalDrinks}",
+                            color = Color(0xFFFF7F50).copy(alpha = 1f),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 26.sp,
+                            fontFamily = FontFamily.Serif
+                        )
+                    }
+                }
+
             }
             if (showDrinkDialog) {
                 DrinkSelectionDialog(onDismiss = { showDrinkDialog = false })
@@ -882,16 +863,22 @@ fun Mug(fillLevel: Float) {
 }
 
 
+data class BACSession(
+    val startTime: Long,
+    val endTime: Long,
+    val peakBAC: Double,
+    val duration: Long // duration in milliseconds
+)
 
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
-fun HistoryScreen() {
+fun HistoryScreen(sessionList: List<BACSession>) {
     AnimatedBackground {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -899,9 +886,67 @@ fun HistoryScreen() {
                 color = Color.White,
                 style = MaterialTheme.typography.headlineMedium
             )
-            // Add other content for HistoryScreen here
+
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(top = 16.dp)
+            ) {
+                items(sessionList) { session -> // `sessionList` is the list of BACSession
+                    HistoryItem(session) // Composable that displays each session
+                }
+            }
         }
     }
+}
+
+// Code for items that go into the history list
+
+@Composable
+fun HistoryItem(session: BACSession) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp)
+            .border(1.dp, Color.White), // White border around the card
+        elevation = 4.dp,
+        backgroundColor = Color.Transparent // Make the background of the Card transparent
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Start: ${formatTimestamp(session.startTime)}",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White.copy(alpha = 1f) // Semi-transparent text
+            )
+            Text(
+                text = "End: ${formatTimestamp(session.endTime)}",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White.copy(alpha = 1f) // Semi-transparent text
+            )
+            Text(
+                text = "Peak BAC: ${session.peakBAC}",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White.copy(alpha = 1f) // Semi-transparent text
+            )
+            Text(
+                text = "Duration: ${session.startTime-session.endTime} minutes",
+                style = MaterialTheme.typography.bodyLarge,
+                color = Color.White.copy(alpha = 1f) // Semi-transparent text
+            )
+        }
+    }
+}
+
+
+
+// Helper function to format timestamps (start and end times)
+fun formatTimestamp(time: Long): String {
+    val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+    return formatter.format(Date(time))
 }
 
 
@@ -1002,7 +1047,8 @@ fun PersonalInformationSection() {
 
     val focusManager = LocalFocusManager.current
     Surface(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null, //removes ripple effect
