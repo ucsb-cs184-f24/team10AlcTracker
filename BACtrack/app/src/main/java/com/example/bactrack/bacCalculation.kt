@@ -14,7 +14,7 @@ fun calculateBAC(totalAlcoholConsumed: Double, weight: Double, sex: String, time
     val weightInGrams = weight * 1000
 
     // Calculate BAC
-    val bac = (totalAlcoholConsumed / (r * weightInGrams)) - (beta * time)
+    val bac = ((totalAlcoholConsumed / (r * weightInGrams)) - (beta * time))
 
     // Return BAC, ensuring it's not negative
     return if (bac < 0) 0.0 else bac

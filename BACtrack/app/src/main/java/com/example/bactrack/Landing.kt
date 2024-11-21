@@ -1,4 +1,5 @@
 package com.example.bactrack
+import android.annotation.SuppressLint
 import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.os.Bundle
@@ -19,6 +20,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -231,6 +233,9 @@ class Landing : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        CustomDrinkManager.loadDrinksFromPreferences(this)
+
         enableEdgeToEdge()
         setContent {
             BACtrackTheme {
@@ -675,6 +680,60 @@ fun HomeScreen() {
     }
 }
 
+object CustomDrinkManager {
+    private val customDrinks = mutableStateListOf<Pair<String, Double>>() // Name and alcohol weight
+
+    fun getDrinks(): List<Pair<String, Double>> = customDrinks
+
+    fun addDrink(context: Context, name: String, weight: Double) {
+        customDrinks.add(name to weight)
+        saveDrinksToPreferences(context)
+    }
+
+    fun editDrink(context: Context, oldName: String, newName: String, newWeight: Double) {
+        customDrinks.replaceAll {
+            if (it.first == oldName) newName to newWeight else it
+        }
+        saveDrinksToPreferences(context)
+    }
+
+    fun deleteDrink(context: Context, name: String) {
+        customDrinks.removeAll { it.first == name }
+        saveDrinksToPreferences(context)
+    }
+
+    fun loadDrinksFromPreferences(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("custom_drinks", Context.MODE_PRIVATE)
+        val drinksJson = sharedPreferences.getString("drinks", "[]") ?: "[]"
+        val drinksList = deserializeDrinks(drinksJson)
+        customDrinks.clear()
+        customDrinks.addAll(drinksList)
+    }
+
+    private fun saveDrinksToPreferences(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("custom_drinks", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val drinksJson = serializeDrinks(customDrinks)
+        editor.putString("drinks", drinksJson)
+        editor.apply()
+    }
+
+    private fun serializeDrinks(drinks: List<Pair<String, Double>>): String {
+        return drinks.joinToString(";") { "${it.first},${it.second}" }
+    }
+
+    private fun deserializeDrinks(serialized: String): List<Pair<String, Double>> {
+        return serialized.split(";").mapNotNull { drink ->
+            val parts = drink.split(",")
+            if (parts.size == 2) {
+                val name = parts[0]
+                val weight = parts[1].toDoubleOrNull()
+                if (weight != null) name to weight else null
+            } else null
+        }
+    }
+}
+
 
 
 @Composable
@@ -703,26 +762,29 @@ fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
 
 @Composable
 fun DrinkSelectionDialog(onDismiss: () -> Unit) {
+    val context = LocalContext.current
+    var showCustomDrinkDialog by remember { mutableStateOf(false) }
+    val customDrinks = CustomDrinkManager.getDrinks()
+
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = {
-            Text("What did you drink?", fontWeight = FontWeight.Bold)
-        },
+        title = { Text("What did you drink?", fontWeight = FontWeight.Bold) },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                DrinkOptionRow(
-                    drinkType = "Beer",
-                    icon = Icons.Filled.SportsBar,
-                    onClick = {
-                        SessionManager.addDrink("beer")
-                        onDismiss()
-                    }
-                )
+                // Predefined Drink Options
                 DrinkOptionRow(
                     drinkType = "Wine",
                     icon = Icons.Filled.WineBar,
                     onClick = {
                         SessionManager.addDrink("wine")
+                        onDismiss()
+                    }
+                )
+                DrinkOptionRow(
+                    drinkType = "Beer",
+                    icon = Icons.Filled.SportsBar,
+                    onClick = {
+                        SessionManager.addDrink("beer")
                         onDismiss()
                     }
                 )
@@ -742,15 +804,122 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
                         onDismiss()
                     }
                 )
+
+                // Display Custom Drinks
+                customDrinks.forEach { (name, weight) ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Button(
+                            onClick = {
+                                SessionManager.addCustomDrink(name, weight)
+                                onDismiss()
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(
+                                    imageVector = Icons.Filled.LocalBar,
+                                    contentDescription = "$name Icon",
+                                    modifier = Modifier.size(24.dp),
+                                    tint = Color.White
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(name, color = Color.White)
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Button(
+                            onClick = {
+                                CustomDrinkManager.deleteDrink(context, name)
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                            modifier = Modifier.wrapContentWidth()
+                        ) {
+                            Text("Delete", color = Color.White)
+                        }
+                    }
+                }
+
+                // Add Custom Drink Button
+                Button(
+                    onClick = { showCustomDrinkDialog = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+                    shape = MaterialTheme.shapes.medium
+                ) {
+                    Text("Add Custom Drink", color = Color.White)
+                }
             }
         },
         confirmButton = {},
         dismissButton = {
-            Button(onClick = onDismiss,
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-            ){
-                Text("Cancel",
-                    color = Color.White)
+            Button(onClick = onDismiss, colors = ButtonDefaults.buttonColors(containerColor = Color.Red)) {
+                Text("Cancel", color = Color.White)
+            }
+        }
+    )
+
+    if (showCustomDrinkDialog) {
+        AddCustomDrinkDialog(
+            onDismiss = { showCustomDrinkDialog = false },
+            onSave = { name, weight ->
+                CustomDrinkManager.addDrink(context, name, weight)
+            }
+        )
+    }
+}
+
+
+
+
+
+@Composable
+fun AddCustomDrinkDialog(onDismiss: () -> Unit, onSave: (String, Double) -> Unit) {
+    var name by remember { mutableStateOf("") }
+    var weight by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Add Custom Drink", fontWeight = FontWeight.Bold) },
+        text = {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Drink Name") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = weight,
+                    onValueChange = { weight = it },
+                    label = { Text("Alcohol Weight (g)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    val alcoholWeight = weight.toDoubleOrNull()
+                    if (name.isNotBlank() && alcoholWeight != null) {
+                        onSave(name, alcoholWeight)
+                        onDismiss()
+                    }
+                }
+            ) {
+                Text("Save")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("Cancel")
             }
         }
     )
@@ -973,6 +1142,7 @@ fun ProfileMenu() {
     }
 }
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PersonalInformationSection() {
