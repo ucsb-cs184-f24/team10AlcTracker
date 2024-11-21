@@ -1,6 +1,7 @@
 package com.example.bactrack
 import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -230,6 +231,9 @@ import kotlin.random.Random
 class Landing : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val intent = Intent(this, NotificationService::class.java)
+        startService(intent)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -997,13 +1001,12 @@ fun PersonalInformationSection() {
     val formattedDob = remember(dob) { formatDate(dob) }
 
     val focusManager = LocalFocusManager.current
-
     Surface(
         modifier = Modifier.fillMaxSize()
             .clickable(
                 onClick = { focusManager.clearFocus() },
                 indication = null, //removes ripple effect
-                interactionSource = MutableInteractionSource()
+                interactionSource = remember { MutableInteractionSource() }
             ),
         color = Color(0xFFADD8E6)
     ) {
