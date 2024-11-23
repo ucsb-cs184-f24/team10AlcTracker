@@ -2,4 +2,6 @@
     <string name="app_name">BACtrack</string>
     <string name="title_activity_landing">Landing</string>
     <string name="title_activity_bac_calculation">bacCalculation</string>
+    <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_notifcation_reciever">NotifcationReciever</string>
 </resources>

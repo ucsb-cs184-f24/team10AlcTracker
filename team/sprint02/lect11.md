@@ -1,6 +1,6 @@
-# Lecture 8 Meeting
+# Lecture 11 Meeting
 
-## Scribe: Elijah
+## Scribe: Elijah Anderson
 ## Scrum Master: Ivan Hernandez 
 # Attendance:
 Madison, Elijah, Ivan, Mariana, Kornark
@@ -19,9 +19,9 @@ SUMMARY: Team is completing app testing for GymFlow and discussing what to work 
 - Roadblocks: None
 
 ## Konark Vinod
-- Done: Nothing since last class
-- Doing: workshopping UI ideas for homepage
-- Roadblocks: Race prep
+- Done: initial code for tying BAC to how you feel
+- Doing: working out some kinks and pushing it to personal branch for issue
+- Roadblocks: some logic errors in the code
 
 ## Elijah Anderson
 - Done: MVP and our app has been tested by testing group

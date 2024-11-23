@@ -1,9 +1,9 @@
 package com.example.bactrack
-
-//import androidx.compose.animation.core.animateColor
-
+import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -30,6 +30,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -46,7 +47,10 @@ import androidx.compose.material.icons.filled.LocalDrink
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBar
+
+
 import androidx.compose.material.icons.filled.WineBar
+
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Settings
@@ -71,17 +75,140 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+
+
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
+
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.Offset
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
+import com.example.bactrack.ui.theme.BACtrackTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.unit.sp
+import androidx.compose.material3.*
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.toSize
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.icons.filled.AttachEmail
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Emergency
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.TextFieldValue
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.animation.*
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.LocalBar
+import androidx.compose.material.icons.filled.LocalDrink
+import androidx.compose.material.icons.filled.Remove
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SportsBar
+import androidx.compose.material.icons.filled.WineBar
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.SportsBar
+import androidx.compose.material3.*
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -99,11 +226,14 @@ import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.SessionManager.totalAlcMass
 import com.example.bactrack.ui.theme.BACtrackTheme
 import kotlinx.coroutines.delay
-
+import kotlin.random.Random
 
 class Landing : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        val intent = Intent(this, NotificationService::class.java)
+        startService(intent)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -327,16 +457,15 @@ fun AnimatedBackground(content: @Composable () -> Unit) {
 @Composable
 fun HomeScreen() {
     var counter by remember { mutableStateOf(0) }
-    val maxCounter = 10
-    val fillLevel by animateFloatAsState(targetValue = (counter / maxCounter.toFloat()).coerceIn(0f, 1f))
-
+    val maxCounter = 0.2
     // For BAC calculation
     val currentBAC by remember { derivedStateOf { SessionManager.bac } }
+    val fillLevel by animateFloatAsState(targetValue = (currentBAC.toFloat() / maxCounter.toFloat()).coerceIn(0f, 1f))
     var showDrinkDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         while (true) {
-            delay(60_000L) // 5 minutes
+            delay(60_000L) // 1 minute
             SessionManager.recalculateBAC()
         }
     }
@@ -438,24 +567,12 @@ fun HomeScreen() {
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
                 item {
-                    // Rotating logo with animation
-                    val infiniteRotation = rememberInfiniteTransition()
-                    val rotationAngle by infiniteRotation.animateFloat(
-                        initialValue = 0f,
-                        targetValue = 360f,
-                        animationSpec = infiniteRepeatable(
-                            animation = tween(durationMillis = 7000, easing = LinearEasing),
-                            repeatMode = RepeatMode.Restart
-                        )
-                    )
-
                     Image(
                         painter = painterResource(id = R.drawable.bactrack_logo_better),
                         contentDescription = "BACtrack Logo",
                         modifier = Modifier
                             .size(160.dp)
                             .padding(top = 24.dp)
-                            .rotate(rotationAngle) // Rotating effect
                     )
                 }
                 item {
@@ -557,9 +674,36 @@ fun HomeScreen() {
             if (showDrinkDialog) {
                 DrinkSelectionDialog(onDismiss = { showDrinkDialog = false })
             }
+
         }
     }
 }
+
+
+
+@Composable
+fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
+        shape = MaterialTheme.shapes.medium
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "$drinkType Icon",
+                modifier = Modifier.size(24.dp),
+                tint = Color.White
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(drinkType, color = Color.White)
+        }
+    }
+}
+
 
 @Composable
 fun DrinkSelectionDialog(onDismiss: () -> Unit) {
@@ -607,7 +751,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
         confirmButton = {},
         dismissButton = {
             Button(onClick = onDismiss,
-                   colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
             ){
                 Text("Cancel",
                     color = Color.White)
@@ -616,28 +760,8 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
     )
 }
 
-@Composable
-fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),
-        shape = MaterialTheme.shapes.medium
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = icon,
-                contentDescription = "$drinkType Icon",
-                modifier = Modifier.size(24.dp),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(drinkType, color = Color.White)
-        }
-    }
-}
+
+
 
 
 
@@ -645,28 +769,120 @@ fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
 
 @Composable
 fun Mug(fillLevel: Float) {
-    val mugWidth = 100.dp
-    val mugHeight = 150.dp
+    val mugWidth = 120.dp
+    val mugHeight = 180.dp
+    val handleWidth = 40.dp
+    val handleHeight = 100.dp
+    val glassThickness = 8f
+    val frothHeight = 40.dp
 
-    Canvas(modifier = Modifier.size(mugWidth, mugHeight)) {
-        // Draw the mug outline
-        drawRoundRect(
-            color = Color.Gray,
-            size = size,
-            style = Stroke(width = 8f)
+    // Add padding or offset to adjust the position of the mug
+    Canvas(
+        modifier = Modifier
+            .size(mugWidth + handleWidth, mugHeight + frothHeight)
+            .padding(top = 20.dp) // Adjust this to move vertically
+            .offset(x = 20.dp) // Adjust this to move horizontally
+    ) {
+        val mugBodyWidth = size.width - handleWidth.toPx()
+        val mugBodyHeight = size.height - frothHeight.toPx()
+
+
+        // Draw the filling (beer inside the mug)
+        val beerBrush = Brush.verticalGradient(
+            colors = listOf(
+                Color(0xFFFFD54F), // Lighter yellow (beer top)
+                Color(0xFFFFA000)  // Darker golden (beer bottom)
+            ),
+            startY = size.height * (1 - fillLevel),
+            endY = size.height
         )
 
-        // Draw the filling (based on fill level, starting from the bottom)
         drawRect(
-            color = Color.Blue,
-            size = size.copy(height = size.height * fillLevel),
-            topLeft = androidx.compose.ui.geometry.Offset(
-                x = 0f,
-                y = size.height * (1 - fillLevel)  // Starts from the bottom and goes upwards
+            brush = beerBrush,
+            size = androidx.compose.ui.geometry.Size(
+                mugBodyWidth,
+                mugBodyHeight * fillLevel
+            ),
+            topLeft = Offset(0f, mugBodyHeight * (1 - fillLevel)),
+        )
+
+
+        // Draw the mug body (outer glass border) with a white outline
+        drawRoundRect(
+            color = Color.White, // White outline
+            size = androidx.compose.ui.geometry.Size(mugBodyWidth, mugBodyHeight),
+            cornerRadius = androidx.compose.ui.geometry.CornerRadius(20f, 20f),
+            style = Stroke(width = glassThickness)
+        )
+
+
+
+        // Draw the frothy top only if the mug is not empty
+        if (fillLevel > 0f) {
+            val frothRadius = frothHeight.toPx() / 2
+            val frothOffsetY = mugBodyHeight * (1 - fillLevel) - frothRadius * 0.5f // Closer to the filling
+
+            // Add a base layer of froth (randomized smaller bubbles)
+            for (i in 1..30) {
+                val randomX = Random.nextFloat() * 0.8f * mugBodyWidth + mugBodyWidth * 0.1f
+                val randomY = frothOffsetY + Random.nextFloat() * frothRadius - frothRadius / 2
+                val randomRadius = Random.nextFloat() * (frothRadius * 0.4f) + frothRadius * 0.2f
+                drawCircle(
+                    color = Color.White.copy(alpha = Random.nextFloat() * 0.2f + 0.7f),
+                    center = Offset(randomX, randomY),
+                    radius = randomRadius
+                )
+            }
+
+            // Add larger overlapping bubbles for a layered effect
+            val frothCircles = listOf(
+                Offset(mugBodyWidth * 0.15f, frothOffsetY),
+                Offset(mugBodyWidth * 0.35f, frothOffsetY - frothRadius / 3),
+                Offset(mugBodyWidth * 0.55f, frothOffsetY),
+                Offset(mugBodyWidth * 0.75f, frothOffsetY - frothRadius / 3),
+                Offset(mugBodyWidth * 0.85f, frothOffsetY)
             )
+
+            frothCircles.forEach { circleCenter ->
+                drawCircle(
+                    color = Color.White.copy(alpha = 0.95f),
+                    center = circleCenter,
+                    radius = frothRadius * 0.8f
+                )
+            }
+        }
+
+        // Draw the handle
+        val handleLeft = mugBodyWidth - glassThickness / 2
+        val handleTop = mugBodyHeight / 2 - handleHeight.toPx() / 2
+        drawArc(
+            color = Color.White, // White outline for the handle
+            startAngle = -90f,
+            sweepAngle = 180f,
+            useCenter = false,
+            style = Stroke(width = glassThickness),
+            topLeft = Offset(handleLeft, handleTop),
+            size = androidx.compose.ui.geometry.Size(handleWidth.toPx(), handleHeight.toPx())
+        )
+
+        // Add glass highlights (to make it shiny)
+        drawLine(
+            color = Color.White.copy(alpha = 0.4f),
+            start = Offset(mugBodyWidth * 0.1f, mugBodyHeight * 0.1f),
+            end = Offset(mugBodyWidth * 0.3f, mugBodyHeight * 0.9f),
+            strokeWidth = 4f
+        )
+        drawLine(
+            color = Color.White.copy(alpha = 0.4f),
+            start = Offset(mugBodyWidth * 0.7f, mugBodyHeight * 0.1f),
+            end = Offset(mugBodyWidth * 0.9f, mugBodyHeight * 0.9f),
+            strokeWidth = 4f
         )
     }
 }
+
+
+
 fun Double.format(digits: Int) = "%.${digits}f".format(this)
 @Composable
 fun HistoryScreen() {
@@ -712,68 +928,86 @@ data class CurrentSession(
 
 }
 
+
+
+
 @Composable
 fun ProfileMenu() {
-    AnimatedBackground {
-        val menuItems = listOf("Personal Information", "Health Info", "Preferences", "Account Details", "Settings", "Custom Sections")
-        var selectedMenuItem by remember { mutableStateOf("Personal Information") }
+    val menuItems = listOf("Your Data", "Health Info")
+    var selectedMenuItem by remember { mutableStateOf("Your Data") }
 
-        Row(modifier = Modifier.fillMaxSize()) {
-            // Menu Column on the left
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(16.dp)
-                    .width(150.dp)
-            ) {
-                menuItems.forEach { item ->
-                    Button(
-                        onClick = { selectedMenuItem = item },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (selectedMenuItem == item) Color.Gray else Color.LightGray
-                        )
-                    ) {
-                        Text(text = item)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+    Row(modifier = Modifier.fillMaxSize()) {
+        // Menu Column on the left
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(16.dp)
+                .width(120.dp)
+        ) {
+            menuItems.forEach { item ->
+                Button(
+                    onClick = { selectedMenuItem = item },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (selectedMenuItem == item) Color.Black else Color.Gray
+                    )
+                ) {
+                    Text(text = item)
                 }
+                Spacer(modifier = Modifier.height(8.dp))
             }
+        }
 
-            // Display selected section
-            Column(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(16.dp)
-                    .weight(1f)
-            ) {
-                when (selectedMenuItem) {
-                    "Personal Information" -> PersonalInformationSection()
-                    "Health Info" -> HealthInfoSection()
-                    "Preferences" -> PreferencesSection()
-                    "Account Details" -> AccountDetailsSection()
-                    "Settings" -> SettingsSection()
-                    "Custom Sections" -> CustomSectionsSection()
-                }
+        // Display selected section
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .padding(16.dp)
+                .weight(1f)
+        ) {
+            when (selectedMenuItem) {
+                "Your Data" -> PersonalInformationSection()
+                "Health Info" -> HealthInfoSection()
+//                "Preferences" -> PreferencesSection()
+//                "Account Details" -> AccountDetailsSection()
+//                "Settings" -> SettingsSection()
+//                "Custom Sections" -> CustomSectionsSection()
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PersonalInformationSection() {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    var name by remember { mutableStateOf(sharedPreferences.getString("name", "") ?: "") }
-    var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "") ?: "") }
-    var dob by remember { mutableStateOf(sharedPreferences.getString("dob", "") ?: "") }
-    var email by remember { mutableStateOf(sharedPreferences.getString("email", "") ?: "") }
-    var phone by remember { mutableStateOf(sharedPreferences.getString("phone", "") ?: "") }
+    var name by remember { mutableStateOf(PersonManager.mainUser.name) }
+    var dob by remember { mutableStateOf(PersonManager.mainUser.dateOfBirth) }
+    var email by remember { mutableStateOf(PersonManager.mainUser.email) }
+    var phone by remember { mutableStateOf(TextFieldValue(formatPhoneNumber(PersonManager.mainUser.phoneNumber.toString()))) }
+    var emergencyNumber by remember {
+        mutableStateOf(
+            TextFieldValue(
+                formatPhoneNumber(
+                    PersonManager.mainUser.emergencyContactNum.toString()
+                )
+            )
+        )
+    }
 
+    val calendarState = rememberSheetState()
+    //convert Dob to displayable format
+    val formattedDob = remember(dob) { formatDate(dob) }
 
-
+    val focusManager = LocalFocusManager.current
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
+            .clickable(
+                onClick = { focusManager.clearFocus() },
+                indication = null, //removes ripple effect
+                interactionSource = remember { MutableInteractionSource() }
+            ),
         color = Color(0xFFADD8E6)
     ) {
         Column(
@@ -793,24 +1027,194 @@ fun PersonalInformationSection() {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            EditableProfileField(
+                label = "Name",
+                value = name,
+                keyboardOptions = KeyboardOptions.Default,
+                maxLength = 20
+            ) { newName ->
+                if (newName.length <= 20) {
+                    name = newName
+                    PersonManager.mainUser.name = newName
+                }
+                else if (newName.length > 20) {
+                    PersonManager.mainUser.name = newName.substring(0, 20)
+                }
+                else {
+                    PersonManager.mainUser.name = ""
+                }
+            }
 
 
+            //this was needed in order to make the calendar display click correctly
+            ClickableField(
+                label = "Date of Birth",
+                value = formattedDob,
+                onClick = { calendarState.show() } // Open calendar on click
+            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
-//
-            EditableProfileField("Name", name) { name = it }
-//            EditableProfileField("Gender", gender) { gender = it }
-            EditableProfileField("Date of Birth", dob) { dob = it }
-            EditableProfileField("Email", email) { email = it }
-            EditableProfileField("Phone Number", phone) { phone = it }
+            CalendarDialog(
+                state = calendarState,
+                config = CalendarConfig(
+                    monthSelection = true,
+                    yearSelection = true,
+                    style = CalendarStyle.MONTH
+                ),
+                selection = CalendarSelection.Date { date ->
+                    val newDob = date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+                    dob = newDob
+                    PersonManager.mainUser.dateOfBirth = newDob
+                    Log.d("SelectedDate", "$date")
+                }
+            )
+            ////////////////////////////////////////////////////////////////
+            EditableProfileField(
+                label = "Email",
+                value = email,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
+            ) { newEmail ->
+                email = newEmail
+                if (isValidEmail(newEmail)) {
+                    PersonManager.mainUser.email = newEmail
+                }
+            }
+            Spacer(modifier = Modifier.height(4.dp))
+            EditablePhoneField(
+                label = "Phone Number",
+                value = phone,
+                onValueChange = { newPhone ->
+                    phone = newPhone // Update intermediate state
+                    if (newPhone.text.length == 14) { // Update only if valid
+                        PersonManager.mainUser.phoneNumber =
+                            newPhone.text.filter { it.isDigit() }.toLong()
+                    }
+                }
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            // Emergency Contact Field with formatting
+            EditablePhoneField(
+                label = "Emergency Contact",
+                value = emergencyNumber,
+                onValueChange = { newEmergencyNumber ->
+                    emergencyNumber = newEmergencyNumber // Update intermediate state
+                    if (newEmergencyNumber.text.length == 14) { // Update only if valid
+                        PersonManager.mainUser.emergencyContactNum =
+                            newEmergencyNumber.text.filter { it.isDigit() }.toLong()
+                    }
+                }
+            )
+        }
+    }
+}
+
+//Helper function for formatDate
+fun formatDate(date: String): String {
+    return try {
+        val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+        LocalDate.parse(date, formatter).format(formatter)
+    } catch (e: Exception) {
+        ""
+    }
+}
+
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+    return emailRegex.matches(email)
+}
+
+fun formatPhoneNumber(input: String): String {
+    val digits = input.filter { it.isDigit() }
+    // format as (XXX) XXX-XXXX
+    return when {
+        digits.length >= 10 -> "(${digits.substring(0, 3)}) ${
+            digits.substring(
+                3,
+                6
+            )
+        }-${digits.substring(6, 10)}"
+
+        digits.length >= 6 -> "(${digits.substring(0, 3)}) ${
+            digits.substring(
+                3,
+                6
+            )
+        }-${digits.substring(6)}"
+
+        digits.length >= 3 -> "(${digits.substring(0, 3)}) ${digits.substring(3)}"
+        else -> digits
+    }
+}
+
+fun applyPhoneMask(input: String): String {
+    val digits = input.filter { it.isDigit() }
+    val builder = StringBuilder()
+
+    for (i in digits.indices) {
+        when (i) {
+            0 -> builder.append("(")
+            3 -> builder.append(") ")
+            6 -> builder.append("-")
+        }
+        builder.append(digits[i])
+    }
+
+    return builder.toString().take(14) // Limit to (XXX) XXX-XXXX
+}
+
+
+@Composable
+fun ClickableField(label: String, value: String, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+            .padding(vertical = 4.dp)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.medium)
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(
+                    1.dp,
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                    MaterialTheme.shapes.small
+                )
+                .padding(12.dp)
+                .align(Alignment.CenterHorizontally)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth()
+
+            ) {
+                Icon(Icons.Filled.CalendarMonth, contentDescription = "Email Icon")
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface
+
+                )
+            }
 
         }
     }
 }
+
 // Helper Composable for Profile Fields
 @Composable
-fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange: (String) -> Unit) {
+fun ProfileField(
+    label: String,
+    value: String,
+    isEditing: Boolean,
+    onValueChange: (String) -> Unit
+) {
     if (isEditing) {
         OutlinedTextField(
             value = value,
@@ -828,16 +1232,20 @@ fun ProfileField(label: String, value: String, isEditing: Boolean, onValueChange
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HealthInfoSection() {
     val context = LocalContext.current
     val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
     var weight by remember { mutableStateOf(sharedPreferences.getString("weight", "") ?: "") }
-    var gender by remember { mutableStateOf(sharedPreferences.getString("gender", "Female") ?: "Female") }
+    var gender by remember {
+        mutableStateOf(
+            sharedPreferences.getString("gender", "Female") ?: "Female"
+        )
+    }
     var showMessage by remember { mutableStateOf(false) }
-    val genderOptions = listOf("Male","Female","Other")
-    var expanded by remember {mutableStateOf(false)}
+    val focusManager = LocalFocusManager.current
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color(0xFFADD8E6)
@@ -845,26 +1253,41 @@ fun HealthInfoSection() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .imePadding(), //automatically adjusts padding when keyboard is open
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
                 value = weight,
-                onValueChange = {
-                    val newValue = it.toDoubleOrNull()
-                    if (newValue != null && newValue > 0 && newValue < 500)
-                        weight = it
+                onValueChange = { newValue ->
+                    if (newValue.isEmpty()) {
+                        weight = ""
+                    } else {
+                        val weightValue = newValue.toDoubleOrNull()
+                        if (weightValue != null && weightValue >= 0 && weightValue < 500) {
+                            weight = newValue
+                        }
+                    }
                 },
                 label = { Text("Enter your weight (kg)") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
+                leadingIcon = {
+                    Icon(Icons.Filled.FitnessCenter, contentDescription = "Weight Icon")
+                }
             )
 
             //drop down menu for gender selection
             dropDownMenu(
                 selectedGender = gender,
-                setSelectedGender = { gender = it } // Lambda to update gender in HealthInfoSection
+                setSelectedGender = {
+                    gender = it
+                } // Lambda to update gender in HealthInfoSection
             )
 
             Spacer(modifier = Modifier.weight(1f)) // Push the button to the bottom
@@ -913,7 +1336,7 @@ fun dropDownMenu(
     val list = listOf("Male", "Female", "Other (Biological Male)", "Other (Biological Female)")
     var selectedItem by remember { mutableStateOf("") }
 
-    var textFiledSize by remember { mutableStateOf(Size.Zero)}
+    var textFiledSize by remember { mutableStateOf(Size.Zero) }
 
     val icon = if (expanded) {
         Icons.Filled.KeyboardArrowUp
@@ -924,7 +1347,7 @@ fun dropDownMenu(
     Column(modifier = Modifier.padding(20.dp)) {
         OutlinedTextField(
             value = selectedItem,
-            onValueChange = {selectedItem = it},
+            onValueChange = { selectedItem = it },
             modifier = Modifier
                 .fillMaxWidth()
                 .onGloballyPositioned { coordinates ->
@@ -933,7 +1356,7 @@ fun dropDownMenu(
             label = { Text("Select your gender") },
             readOnly = true,
             trailingIcon = {
-                Icon(icon,"",Modifier.clickable { expanded = !expanded })
+                Icon(icon, "", Modifier.clickable { expanded = !expanded })
             }
         )
 
@@ -947,9 +1370,9 @@ fun dropDownMenu(
                 DropdownMenuItem(
                     text = { Text(text = label) },
                     onClick = {
-                    selectedItem = label
-                    expanded = false
-                    setSelectedGender(label)
+                        selectedItem = label
+                        expanded = false
+                        setSelectedGender(label)
                     }
                 )
             }
@@ -1046,36 +1469,37 @@ fun PreferencesTab() {
 
 @Composable
 fun PreferencesSection() {
-    val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    var notificationsEnabled by remember { mutableStateOf(sharedPreferences.getBoolean("notifications", true)) }
-    var themePreference by remember { mutableStateOf(sharedPreferences.getString("theme", "Light") ?: "Light") }
-
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // Ensure `notificationsEnabled` is a `Boolean` and `themePreference` is a `String`
-            var notificationsEnabled by remember { mutableStateOf(false) }
-            var themePreference by remember { mutableStateOf("Light") }
-
-            // Pass the right lambda type
-//            SwitchSetting("Enable Notifications", notificationsEnabled) { isEnabled: Boolean ->
-//                notificationsEnabled = isEnabled
+//    val context = LocalContext.current
+//    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+//    var notificationsEnabled by remember { mutableStateOf(sharedPreferences.getBoolean("notifications", true)) }
+//    var themePreference by remember { mutableStateOf(sharedPreferences.getString("theme", "Light") ?: "Light") }
+//
+//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(16.dp),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            // Ensure `notificationsEnabled` is a `Boolean` and `themePreference` is a `String`
+//            var notificationsEnabled by remember { mutableStateOf(false) }
+//            var themePreference by remember { mutableStateOf("Light") }
+//
+//            // Pass the right lambda type
+////            SwitchSetting("Enable Notifications", notificationsEnabled) { isEnabled: Boolean ->
+////                notificationsEnabled = isEnabled
+////            }
+//
+//            EditableProfileField("Theme Preference", themePreference) { newPreference: String ->
+//                themePreference = newPreference
 //            }
-
-            EditableProfileField("Theme Preference", themePreference) { newPreference: String ->
-                themePreference = newPreference
-            }
-        }
-    }
+//        }
+//    }
 
 
 }
+
 @Composable
 fun SwitchSetting(x0: String, x1: Boolean, content: @Composable () -> Unit) {
     TODO("Not yet implemented")
@@ -1083,73 +1507,125 @@ fun SwitchSetting(x0: String, x1: Boolean, content: @Composable () -> Unit) {
 
 @Composable
 fun AccountDetailsSection() {
-    val context = LocalContext.current
-    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-    var loginEmail by remember { mutableStateOf(sharedPreferences.getString("login_email", "") ?: "") }
-    var subscriptionPlan by remember { mutableStateOf(sharedPreferences.getString("subscription_plan", "Free") ?: "Free") }
-    var lastLogin by remember { mutableStateOf(sharedPreferences.getString("last_login", "") ?: "") }
-
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            EditableProfileField("Login Email", loginEmail) { loginEmail = it }
-            EditableProfileField("Subscription Plan", subscriptionPlan) { subscriptionPlan = it }
-            EditableProfileField("Last Login", lastLogin) { lastLogin = it }
-        }
-    }
+//    val context = LocalContext.current
+//    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+//    var loginEmail by remember { mutableStateOf(sharedPreferences.getString("login_email", "") ?: "") }
+//    var subscriptionPlan by remember { mutableStateOf(sharedPreferences.getString("subscription_plan", "Free") ?: "Free") }
+//    var lastLogin by remember { mutableStateOf(sharedPreferences.getString("last_login", "") ?: "") }
+//
+//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(16.dp),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            EditableProfileField("Login Email", loginEmail) { loginEmail = it }
+//            EditableProfileField("Subscription Plan", subscriptionPlan) { subscriptionPlan = it }
+//            EditableProfileField("Last Login", lastLogin) { lastLogin = it }
+//        }
+//    }
 }
 
 @Composable
 fun SettingsSection() {
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Settings Section")
-            Button(onClick = { /* Implement data export */ }) { Text("Export Data") }
-            Button(onClick = { /* Implement account deletion */ }) { Text("Delete Account") }
-        }
-    }
+//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(16.dp),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Text("Settings Section")
+//            Button(onClick = { /* Implement data export */ }) { Text("Export Data") }
+//            Button(onClick = { /* Implement account deletion */ }) { Text("Delete Account") }
+//        }
+//    }
 }
 
+//currently not in use
 @Composable
 fun CustomSectionsSection() {
-    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text("Custom Sections")
-            EditableProfileField("Emergency Contact", "", isEditing = true, onValueChange = { /* Implement save logic */ })
-            EditableProfileField("Medical Restrictions", "", isEditing = true, onValueChange = { /* Implement save logic */ })
-        }
-    }
+//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
+//        Column(
+//            modifier = Modifier
+//                .fillMaxSize()
+//                .padding(16.dp),
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally
+//        ) {
+//            Text("Custom Sections")
+//            EditableProfileField("Emergency Contact", "", isEditing = true, onValueChange = { /* Implement save logic */ })
+//            EditableProfileField("Medical Restrictions", "", isEditing = true, onValueChange = { /* Implement save logic */ })
+//        }
+//    }
+}
+
+@Composable
+fun EditablePhoneField(
+    label: String,
+    value: TextFieldValue,
+    onValueChange: (TextFieldValue) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { newValue ->
+            val digits = newValue.text.filter { it.isDigit() } // Extract only digits
+            val formattedPhone = applyPhoneMask(digits) // Apply the mask
+            onValueChange(
+                TextFieldValue(
+                    formattedPhone,
+                    TextRange(formattedPhone.length)
+                )
+            ) // Update text and move cursor to the end
+        },
+        label = { Text(label) },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
+        leadingIcon = {
+            when (label) {
+                "Phone Number" -> Icon(Icons.Filled.Call, contentDescription = "Phone Icon")
+                "Emergancy Contact" -> Icon(
+                    Icons.Filled.Emergency,
+                    contentDescription = "EC Icon"
+                )
+
+                else -> Icon(Icons.Filled.Info, contentDescription = "Default Icon")
+            }
+        },
+        modifier = Modifier.fillMaxWidth()
+
+    )
 }
 
 
 @Composable
-fun EditableProfileField(label: String, value: String, isEditing: Boolean = true, onValueChange: (String) -> Unit) {
-    if (isEditing) {
-        OutlinedTextField(
-            value = value,
-            onValueChange = onValueChange,
-            label = { Text(label) },
-            modifier = Modifier.fillMaxWidth()
-        )
-    } else {
-        Text(text = "$label: $value", modifier = Modifier.fillMaxWidth())
-    }
+fun EditableProfileField(
+    label: String,
+    value: String,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    maxLength: Int? = null,
+    onValueChange: (String) -> Unit
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { newValue ->
+            if (maxLength == null || newValue.length <= maxLength) {
+                onValueChange(newValue)
+            }
+        },
+        label = { Text(label) },
+        modifier = Modifier.fillMaxWidth(),
+        keyboardOptions = keyboardOptions,
+        leadingIcon = {
+            when (label) {
+                "Name" -> Icon(Icons.Filled.Face, contentDescription = "Name Icon")
+                "Email" -> Icon(Icons.Filled.AttachEmail, contentDescription = "Email Icon")
+                else -> Icon(Icons.Filled.Info, contentDescription = "Default Icon")
+            }
+
+        }
+    )
 }
 
