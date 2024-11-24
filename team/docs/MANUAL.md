@@ -1,6 +1,81 @@
-# Product Purpose
-BACtrack is an app that aims to keep people safe while drinking. The user will enter their personal stats (height, weight, sex) and they will be stored and later used to calculate Blood Alcohol Content. On a nightly basis, the user can log their types of drinks and quantity of drinks, and the app will calculate and display their BAC. This way, the user can track their alcohol levels on a nightly basis and easily log/monitor their drinking habits for safety.
+# BACtrack Manual
 
+## Product Purpose
+BACtrack is an Android mobile application designed to help individuals drink responsibly and stay safe. Its purpose is to provide users with a reliable tool to monitor and manage their alcohol consumption. By tracking the number and types of alcoholic drinks consumed, alongside storing personal information like weight and sex, BACtrack estimates the user’s Blood Alcohol Content (BAC) in real-time. It also offers insights into how users may feel based on their BAC levels.
 
-# Intended User Audience
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. In in justo vel ipsum molestie lacinia. In non feugiat eros, ac aliquam massa. Sed ullamcorper neque ac erat elementum, sed rhoncus augue vulputate. Etiam blandit vel est at finibus. Pellentesque quam tellus, rhoncus nec nisi pulvinar, vestibulum vulputate eros. Praesent vestibulum malesuada sagittis. Nam rutrum semper risus, sollicitudin vulputate turpis mollis vel. Morbi imperdiet vestibulum libero in blandit. Morbi odio magna, convallis a nibh porttitor, pretium eleifend metus. Proin vehicula massa id quam malesuada, et pretium tortor posuere. In nisl mi, interdum id lectus in, vulputate tempor mauris. Nulla volutpat mauris tellus, sed venenatis tortor consectetur et. Morbi non vehicula lectus. Cras urna nulla, dapibus nec tellus vitae, porta ornare nunc. Fusce ac ante tortor.
+BACtrack promotes health-conscious drinking habits by enabling users to analyze and understand their consumption patterns through visual BAC representations and historical data tracking. It simplifies the process of logging drinks—even without actively using the app—ensuring ease of use in social settings. Additionally, the app prioritizes safety by maintaining critical emergency contact information.
+
+Designed with an intuitive and user-friendly interface, BACtrack is accessible to all users, empowering them to make informed decisions and adopt safer drinking practices.
+
+---
+
+## Intended User Audience
+
+BACtrack is intended for legal-aged individuals who consume alcohol and are seeking a tool to help them track and manage their drinking responsibly. The target user audience includes:
+
+### Primary Users:
+1. **Health-Conscious Drinkers**:
+   - Individuals interested in tracking their alcohol intake to maintain healthier drinking habits.
+   - Users who want to avoid excessive consumption by understanding their BAC levels.
+
+2. **Social Drinkers**:
+   - People who enjoy casual drinking and want to stay informed about their alcohol consumption in social settings.
+
+3. **Safety-Conscious Users**:
+   - Individuals who wish to manage their drinking while staying aware of their potential impairment levels.
+   - People looking to have emergency contacts readily available for unforeseen situations.
+
+### Secondary Users:
+1. **Supporters of Responsible Drinking**:
+   - Family members or friends of individuals who drink alcohol, encouraging them to monitor their habits responsibly.
+
+2. **Data-Driven Users**:
+   - Users who are interested in reviewing their historical drinking data to identify patterns or improve habits.
+
+---
+
+## Installation Guide
+Instructions on downloading and installing the app.
+
+*Placeholder text*:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat sollicitudin maximus. Pellentesque eget feugiat ex. Sed sit amet arcu dignissim, dignissim elit vel, fermentum ligula.
+
+---
+
+## Getting Started
+Setting up the profile/first-time users.
+
+*Placeholder text*:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat sollicitudin maximus. Pellentesque eget feugiat ex. Sed sit amet arcu dignissim, dignissim elit vel, fermentum ligula.
+
+---
+
+## Features and Functionality
+Details about each feature with future screenshots.
+
+*Placeholder text*:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat sollicitudin maximus. Pellentesque eget feugiat ex. Sed sit amet arcu dignissim, dignissim elit vel, fermentum ligula.
+
+---
+
+## Navigation
+Overview of the app’s user interface.
+
+*Placeholder text*:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat sollicitudin maximus. Pellentesque eget feugiat ex. Sed sit amet arcu dignissim, dignissim elit vel, fermentum ligula.
+
+---
+
+## Legal and Safety Information
+Disclaimers and responsible drinking advice.
+
+*Placeholder text*:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat sollicitudin maximus. Pellentesque eget feugiat ex. Sed sit amet arcu dignissim, dignissim elit vel, fermentum ligula.
+
+---
+
+## Contact Information
+Support details/developers’ contact information.
+
+*Placeholder text*:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas placerat sollicitudin maximus. Pellentesque eget feugiat ex. Sed sit amet arcu dignissim, dignissim elit vel, fermentum ligula.

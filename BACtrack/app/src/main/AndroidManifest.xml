@@ -2,7 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
     <application
+
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -12,20 +18,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BACtrack"
         tools:targetApi="31">
+
+        <receiver android:name=".DrinkActionReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="ADD_SHOT" />
+                <action android:name="ADD_BEER" />
+                <action android:name="ADD_OTHER" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name=".bacCalculation"
             android:exported="false"
             android:label="@string/title_activity_bac_calculation"
             android:theme="@style/Theme.BACtrack"
-            android:windowSoftInputMode="adjustResize"/>
-
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Landing"
             android:exported="false"
             android:label="@string/title_activity_landing"
             android:theme="@style/Theme.BACtrack"
-            android:windowSoftInputMode="adjustResize"/>
-
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -38,6 +52,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".NotificationService"
+            android:foregroundServiceType="dataSync" />
     </application>
 
 </manifest>
