@@ -9,15 +9,38 @@ import androidx.compose.runtime.setValue
 object SessionManager {
     var currentSession by mutableStateOf(CurrentSession())
     var firstDrinkTime: Long? = null
+
+    private val customDrinkContributions = mutableListOf<Double>()
+    private var _customDrinkCount = mutableStateOf(0) // Use mutableStateOf to track changes
+
+    // Expose customDrinkCount as a read-only property
+    val customDrinkCount: Int
+        get() = _customDrinkCount.value
+
     val historyList = mutableStateListOf<BACSession>()
+
     val totalDrinks: Int
-        get() = currentSession.numBeers + currentSession.numWine + currentSession.numShots + currentSession.numCocktails
+        get() = currentSession.numBeers +
+                currentSession.numWine +
+                currentSession.numShots +
+                currentSession.numCocktails +
+                customDrinkCount // Now tracks changes to _customDrinkCount
 
     val totalAlcMass: Double
         get() = (currentSession.numBeers * 14.0) +
                 (currentSession.numWine * 20.8) +
                 (currentSession.numShots * 14.0) +
-                (currentSession.numCocktails * 27.1)
+                (currentSession.numCocktails * 27.1) +
+                customDrinkContributions.sum()
+
+    fun addCustomDrink(alcoholName: String, alcoholWeight: Double) {
+        // Add the alcohol weight to the custom drink contributions
+        customDrinkContributions.add(alcoholWeight)
+        _customDrinkCount.value++ // Increment the custom drink count explicitly
+        // Trigger BAC recalculation
+        if (firstDrinkTime == null) firstDrinkTime = System.currentTimeMillis()
+        recalculateBAC()
+    }
 
     var bac by mutableStateOf(0.0)
     var peakBac by mutableStateOf(0.0)
