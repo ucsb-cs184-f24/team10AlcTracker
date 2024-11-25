@@ -1,6 +1,9 @@
+
 package com.example.bactrack
 
-import org.junit.jupiter.api.Assertions.*
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
+
 
 import org.junit.Test
 
@@ -9,7 +12,7 @@ class BACCalculationTest {
     // Test cases for male
     @Test
     fun testCalculateBAC_male() {
-        val totalAlcoholConsumed = 10000.0
+        val totalAlcoholConsumed = 100.0
         val weight = 60.0
         val sex = "male"
         val time = 0.0
@@ -23,7 +26,7 @@ class BACCalculationTest {
     // Test cases for female
     @Test
     fun testCalculateBAC_female() {
-        val totalAlcoholConsumed = 10000.0
+        val totalAlcoholConsumed = 100.0
         val weight = 60.0
         val sex = "female"
         val time = 0.0
@@ -33,6 +36,34 @@ class BACCalculationTest {
         println("Calculated BAC: $bac")
 
         assertTrue(bac > 0.3 && bac < 0.305)
+    }
+
+    @Test
+    fun testCalculateBAC_timelong() {
+        val totalAlcoholConsumed = 10000.0
+        val weight = 60.0
+        val sex = "female"
+        val time = 10000.0
+
+        val bac = calculateBAC(totalAlcoholConsumed, weight, sex, time)
+        // Check if BAC is calculated correctly for female
+        println("Calculated BAC: $bac")
+
+        assertTrue(bac < 0.001)
+    }
+
+    @Test
+    fun testCalculateBAC_timeshort() {
+        val totalAlcoholConsumed = 400.0
+        val weight = 60.0
+        val sex = "female"
+        val time = 2.0
+
+        val bac = calculateBAC(totalAlcoholConsumed, weight, sex, time)
+        // Check if BAC is calculated correctly for female
+        println("Calculated BAC: $bac")
+
+        assertTrue(bac > 1.182 && bac < 1.183)
     }
 
     // Test cases for zero or negative BAC
