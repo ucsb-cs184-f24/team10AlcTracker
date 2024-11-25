@@ -624,6 +624,54 @@ fun HomeScreen() {
 
                 }
                 item {
+                    val feeling = getFeelingForBAC(currentBAC)
+                    Text(
+                        text = "You should feel: $feeling",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = getColorForBAC(currentBAC),
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .shadow(6.dp, shape = MaterialTheme.shapes.medium)
+                            .background(
+                                brush = Brush.horizontalGradient(
+                                    colors = listOf(Color.Cyan, Color.Blue)
+                                ),
+                                shape = MaterialTheme.shapes.medium
+                            )
+                            .padding(16.dp)
+                    )
+                }
+                item {
+                    Spacer(modifier = Modifier.height(20.dp))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    ) {
+                        Button(
+                            onClick = { if (counter < maxCounter) counter++ },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00ACC1)),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Add More", color = Color.White)
+                        }
+                        Button(
+                            onClick = { if (counter > 0) counter-- },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00838F)),
+                            shape = MaterialTheme.shapes.medium
+                        ) {
+                            Icon(Icons.Default.Remove, contentDescription = null, tint = Color.White)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Text("Reduce", color = Color.White)
+                        }
+                    }
+
+                }
+                item {
                     Box(
                         modifier = Modifier
 
@@ -662,6 +710,32 @@ fun HomeScreen() {
             }
 
         }
+    }
+}
+
+
+// Map BAC levels to feelings
+fun getFeelingForBAC(bac: Double): String {
+    return when {
+        bac < 0.02 -> "Normal"
+        bac < 0.05 -> "Relaxed 😊"
+        bac < 0.08 -> "Sociable and Warm 😊"
+        bac < 0.15 -> "Tipsy 🍺"
+        bac < 0.30 -> "Drunk 🥴"
+        bac < 0.40 -> "Confused 🤔"
+        else -> "At Risk 🚨"
+    }
+}
+
+// Map BAC levels to colors
+fun getColorForBAC(bac: Double): Color {
+    return when {
+        bac < 0.02 -> Color.Green
+        bac < 0.05 -> Color.Yellow
+        bac < 0.08 -> Color(0xFFFFA500) // Orange
+        bac < 0.15 -> Color(0xFFFF4500) // Red-Orange
+        bac < 0.30 -> Color.Red
+        else -> Color(0xFF8B0000) // Dark Red
     }
 }
 
@@ -718,8 +792,6 @@ object CustomDrinkManager {
         }
     }
 }
-
-
 
 @Composable
 fun DrinkOptionRow(drinkType: String, icon: ImageVector, onClick: () -> Unit) {
