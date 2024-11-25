@@ -466,7 +466,7 @@ fun HomeScreen() {
 
             LazyColumn(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp) // Reduced spacing between items
             ) {
                 item {
                     Image(
@@ -500,7 +500,6 @@ fun HomeScreen() {
                         onClick = { showDrinkDialog = true }, // Show the dialog when clicked
                         modifier = Modifier.padding(horizontal = 16.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-
                         shape = MaterialTheme.shapes.medium
                     ) {
                         Text(
@@ -513,7 +512,6 @@ fun HomeScreen() {
                 }
                 item {
                     Mug(fillLevel = fillLevel)
-
                 }
                 item {
                     val feeling = getFeelingForBAC(currentBAC)
@@ -523,7 +521,7 @@ fun HomeScreen() {
                         fontWeight = FontWeight.Bold,
                         color = getColorForBAC(currentBAC),
                         modifier = Modifier
-                            .padding(16.dp)
+                            .padding(top = 4.dp) // Reduced space even more
                             .shadow(6.dp, shape = MaterialTheme.shapes.medium)
                             .background(
                                 brush = Brush.horizontalGradient(
@@ -537,7 +535,6 @@ fun HomeScreen() {
                 item {
                     Box(
                         modifier = Modifier
-
                             .background(Color.White, shape = MaterialTheme.shapes.medium)
                             .padding(16.dp)
                     ) {
@@ -553,7 +550,6 @@ fun HomeScreen() {
                 item {
                     Box(
                         modifier = Modifier
-
                             .background(Color.White, shape = MaterialTheme.shapes.medium)
                             .padding(16.dp)
                     ) {
@@ -566,7 +562,6 @@ fun HomeScreen() {
                         )
                     }
                 }
-
             }
             if (showDrinkDialog) {
                 DrinkSelectionDialog(onDismiss = { showDrinkDialog = false })
