@@ -643,35 +643,6 @@ fun HomeScreen() {
                     )
                 }
                 item {
-                    Spacer(modifier = Modifier.height(20.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(10.dp),
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    ) {
-                        Button(
-                            onClick = { if (counter < maxCounter) counter++ },
-                            modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00ACC1)),
-                            shape = MaterialTheme.shapes.medium
-                        ) {
-                            Icon(Icons.Default.Add, contentDescription = null, tint = Color.White)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Add More", color = Color.White)
-                        }
-                        Button(
-                            onClick = { if (counter > 0) counter-- },
-                            modifier = Modifier.weight(1f),
-                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00838F)),
-                            shape = MaterialTheme.shapes.medium
-                        ) {
-                            Icon(Icons.Default.Remove, contentDescription = null, tint = Color.White)
-                            Spacer(modifier = Modifier.width(4.dp))
-                            Text("Reduce", color = Color.White)
-                        }
-                    }
-
-                }
-                item {
                     Box(
                         modifier = Modifier
 
