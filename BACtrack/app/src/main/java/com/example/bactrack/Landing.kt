@@ -1,6 +1,7 @@
 package com.example.bactrack
+
+
 import android.annotation.SuppressLint
-import com.example.bactrack.SessionManager.totalAlcMass
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -19,9 +20,10 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,32 +33,36 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Card
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AttachEmail
+import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Emergency
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.FitnessCenter
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.LocalBar
 import androidx.compose.material.icons.filled.LocalDrink
 import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SportsBar
-
-
 import androidx.compose.material.icons.filled.WineBar
-
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.SportsBar
 import androidx.compose.material3.*
 import androidx.compose.material3.Badge
@@ -75,151 +81,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
-
-
 import androidx.compose.runtime.setValue
-
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
-
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
-import com.example.bactrack.ui.theme.BACtrackTheme
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Remove
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.unit.sp
-import androidx.compose.material3.*
-import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.toSize
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.icons.filled.AttachEmail
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.Call
-import androidx.compose.material.icons.filled.Emergency
-import androidx.compose.material.icons.filled.FitnessCenter
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
-import com.maxkeppeker.sheets.core.models.base.rememberSheetState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.calendar.models.CalendarStyle
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.animation.*
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.LocalBar
-import androidx.compose.material.icons.filled.LocalDrink
-import androidx.compose.material.icons.filled.Remove
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.SportsBar
-import androidx.compose.material.icons.filled.WineBar
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.SportsBar
-import androidx.compose.material3.*
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
-import androidx.compose.material3.Button
-import androidx.compose.material3.Icon
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.toSize
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -227,10 +113,16 @@ import androidx.compose.ui.unit.toSize
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.bactrack.SessionManager.totalAlcMass
 import com.example.bactrack.ui.theme.BACtrackTheme
+import com.maxkeppeker.sheets.core.models.base.rememberSheetState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Date
 import java.util.Locale
 import kotlin.random.Random
@@ -1193,42 +1085,40 @@ fun ProfileMenu() {
     val menuItems = listOf("Your Data", "Health Info")
     var selectedMenuItem by remember { mutableStateOf("Your Data") }
 
-    Row(modifier = Modifier.fillMaxSize()) {
-        // Menu Column on the left
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(16.dp)
-                .width(120.dp)
-        ) {
-            menuItems.forEach { item ->
-                Button(
-                    onClick = { selectedMenuItem = item },
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = if (selectedMenuItem == item) Color.Black else Color.Gray
-                    )
-                ) {
-                    Text(text = item)
+    AnimatedBackground { // Wrap content with the AnimatedBackground
+        Row(modifier = Modifier.fillMaxSize()) {
+            // Menu Column on the left
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(16.dp)
+                    .width(120.dp)
+            ) {
+                menuItems.forEach { item ->
+                    Button(
+                        onClick = { selectedMenuItem = item },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = if (selectedMenuItem == item) Color.Black else Color.Gray
+                        )
+                    ) {
+                        Text(text = item)
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
-                Spacer(modifier = Modifier.height(8.dp))
             }
-        }
 
-        // Display selected section
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .padding(16.dp)
-                .weight(1f)
-        ) {
-            when (selectedMenuItem) {
-                "Your Data" -> PersonalInformationSection()
-                "Health Info" -> HealthInfoSection()
-//                "Preferences" -> PreferencesSection()
-//                "Account Details" -> AccountDetailsSection()
-//                "Settings" -> SettingsSection()
-//                "Custom Sections" -> CustomSectionsSection()
+            // Display selected section
+            Column(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(16.dp)
+                    .weight(1f)
+            ) {
+                when (selectedMenuItem) {
+                    "Your Data" -> PersonalInformationSection()
+                    "Health Info" -> HealthInfoSection()
+                }
             }
         }
     }
@@ -1366,6 +1256,12 @@ fun PersonalInformationSection() {
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CalendarDialog(state: SheetState, config: CalendarConfig, selection: Date) {
+    TODO("Not yet implemented")
 }
 
 //Helper function for formatDate
@@ -1762,64 +1658,6 @@ fun PreferencesSection() {
 @Composable
 fun SwitchSetting(x0: String, x1: Boolean, content: @Composable () -> Unit) {
     TODO("Not yet implemented")
-}
-
-@Composable
-fun AccountDetailsSection() {
-//    val context = LocalContext.current
-//    val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-//    var loginEmail by remember { mutableStateOf(sharedPreferences.getString("login_email", "") ?: "") }
-//    var subscriptionPlan by remember { mutableStateOf(sharedPreferences.getString("subscription_plan", "Free") ?: "Free") }
-//    var lastLogin by remember { mutableStateOf(sharedPreferences.getString("last_login", "") ?: "") }
-//
-//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(16.dp),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            EditableProfileField("Login Email", loginEmail) { loginEmail = it }
-//            EditableProfileField("Subscription Plan", subscriptionPlan) { subscriptionPlan = it }
-//            EditableProfileField("Last Login", lastLogin) { lastLogin = it }
-//        }
-//    }
-}
-
-@Composable
-fun SettingsSection() {
-//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(16.dp),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text("Settings Section")
-//            Button(onClick = { /* Implement data export */ }) { Text("Export Data") }
-//            Button(onClick = { /* Implement account deletion */ }) { Text("Delete Account") }
-//        }
-//    }
-}
-
-//currently not in use
-@Composable
-fun CustomSectionsSection() {
-//    Surface(modifier = Modifier.fillMaxSize(), color = Color(0xFFADD8E6)) {
-//        Column(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(16.dp),
-//            verticalArrangement = Arrangement.Center,
-//            horizontalAlignment = Alignment.CenterHorizontally
-//        ) {
-//            Text("Custom Sections")
-//            EditableProfileField("Emergency Contact", "", isEditing = true, onValueChange = { /* Implement save logic */ })
-//            EditableProfileField("Medical Restrictions", "", isEditing = true, onValueChange = { /* Implement save logic */ })
-//        }
-//    }
 }
 
 @Composable
