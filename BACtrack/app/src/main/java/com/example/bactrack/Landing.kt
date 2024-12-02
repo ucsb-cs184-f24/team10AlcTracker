@@ -1152,7 +1152,7 @@ fun PersonalInformationSection() {
                 indication = null, //removes ripple effect
                 interactionSource = remember { MutableInteractionSource() }
             ),
-        color = Color(0xFFADD8E6)
+        color = Color(0xFFFDBCB4)
     ) {
         Column(
             modifier = Modifier
@@ -1398,7 +1398,7 @@ fun HealthInfoSection() {
     val focusManager = LocalFocusManager.current
     Surface(
         modifier = Modifier.fillMaxSize(),
-        color = Color(0xFFADD8E6)
+        color = Color(0xFFFDBCB4)
     ) {
         Column(
             modifier = Modifier
