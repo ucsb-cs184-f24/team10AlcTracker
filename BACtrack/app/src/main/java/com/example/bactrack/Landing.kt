@@ -519,14 +519,12 @@ fun HomeScreen() {
                         text = "You should feel: $feeling",
                         fontSize = 14.sp,
                         fontWeight = FontWeight.Bold,
-                        color = getColorForBAC(currentBAC),
+                        color = getTextColorForBAC(currentBAC),
                         modifier = Modifier
                             .padding(top = 4.dp) // Reduced space even more
                             .shadow(6.dp, shape = MaterialTheme.shapes.medium)
                             .background(
-                                brush = Brush.horizontalGradient(
-                                    colors = listOf(Color.Cyan, Color.Blue)
-                                ),
+                                color = getBackgroundColorForBAC(currentBAC),
                                 shape = MaterialTheme.shapes.medium
                             )
                             .padding(16.dp)
@@ -572,7 +570,7 @@ fun HomeScreen() {
 }
 
 
-// Map BAC levels to feelings
+
 fun getFeelingForBAC(bac: Double): String {
     return when {
         bac < 0.02 -> "Normal"
@@ -585,8 +583,8 @@ fun getFeelingForBAC(bac: Double): String {
     }
 }
 
-// Map BAC levels to colors
-fun getColorForBAC(bac: Double): Color {
+
+fun getBackgroundColorForBAC(bac: Double): Color {
     return when {
         bac < 0.02 -> Color.Green
         bac < 0.05 -> Color.Yellow
@@ -594,6 +592,13 @@ fun getColorForBAC(bac: Double): Color {
         bac < 0.15 -> Color(0xFFFF4500) // Red-Orange
         bac < 0.30 -> Color.Red
         else -> Color(0xFF8B0000) // Dark Red
+    }
+}
+
+fun getTextColorForBAC(bac: Double): Color {
+    return when {
+        bac < 0.30 -> Color.Black
+        else -> Color.White
     }
 }
 
