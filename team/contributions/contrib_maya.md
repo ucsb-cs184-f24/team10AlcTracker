@@ -7,4 +7,4 @@
 
 ## Graph accuracy
 
-Due to some merge conflicts, Ivan's contributions were merged under other members' branches and he therefore is reflected at all in the graph. Ivan did a significant amount of work and should be credited for it.
+Due to some merge conflicts, Ivan's contributions were merged under other members' branches and he therefore isn't reflected at all in the graph. Ivan did a significant amount of work and should be credited for it.
