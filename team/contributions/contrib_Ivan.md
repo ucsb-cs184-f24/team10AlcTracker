@@ -1,14 +1,14 @@
 ## Contributions - Ivan
 
-* Created the initial Profile Page
-* Worked on the HomePage UI/UX design
-    * Created the background design 
-    * Modified the word fonts and color design of the app
-    * Experimenting with rotating logo
-* Worked on the UI/UX of the SignUp Page
-    * Added logo to our sign-up page
-    * Added Google and Github logos to our authentification signup options
-* Worked on minor design changes througout the product lifecycle. 
+Created the initial Profile Page.
+Developed the HomePage UI/UX design:
+	•	Designed the background layout.
+	•	Modified fonts and color themes for a cohesive app design.
+	•	Experimented with a rotating logo animation.
+Enhanced the SignUp Page UI/UX:
+	•	Incorporated the app logo into the sign-up page.
+	•	Added Google and GitHub logos to authentication sign-up options.
+Implemented minor design changes throughout the product lifecycle to ensure consistency and refinement.
 
 ## Is the contributions graph accurate? 
 
