@@ -16,9 +16,9 @@ Madison Long: madisonlong1
 
 Elijah Anderson: ElijahCanderson
 
-Ivan Hernandez: Ivan Hernandez
+Ivan Hernandez: ivan512az
 
-Mariana Rosillo: Mariana Rosillo
+Mariana Rosillo: rosillo-m
 
 Konark Vinod: konarkv
 
