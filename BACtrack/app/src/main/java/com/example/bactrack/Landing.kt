@@ -194,6 +194,11 @@ class Landing : ComponentActivity() {
                             composable("profile") { ProfileMenu() }
                         }
                     }
+                    LaunchedEffect(Unit) {
+                        if (PersonManager.mainUser.weight == 70.0 && PersonManager.mainUser.sex == true) {
+                            navController.navigate("profile")
+                        }
+                    }
                 }
             }
         }
@@ -1083,7 +1088,7 @@ data class CurrentSession(
 @Composable
 fun ProfileMenu() {
     val menuItems = listOf("Your Data", "Health Info")
-    var selectedMenuItem by remember { mutableStateOf("Your Data") }
+    var selectedMenuItem by remember { mutableStateOf("Health Info") }
 
     AnimatedBackground { // Wrap content with the AnimatedBackground
         Row(modifier = Modifier.fillMaxSize()) {
@@ -1725,4 +1730,3 @@ fun EditableProfileField(
         }
     )
 }
-
