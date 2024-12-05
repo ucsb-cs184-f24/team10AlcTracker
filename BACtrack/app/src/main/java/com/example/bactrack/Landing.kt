@@ -1084,6 +1084,7 @@ data class CurrentSession(
 fun ProfileMenu() {
     val menuItems = listOf("Your Data", "Health Info")
     var selectedMenuItem by remember { mutableStateOf("Your Data") }
+    val context = LocalContext.current
 
     AnimatedBackground { // Wrap content with the AnimatedBackground
         Row(modifier = Modifier.fillMaxSize()) {
@@ -1092,19 +1093,36 @@ fun ProfileMenu() {
                 modifier = Modifier
                     .fillMaxHeight()
                     .padding(16.dp)
-                    .width(120.dp)
+                    .width(120.dp),
+                verticalArrangement = Arrangement.SpaceBetween // Align logout button to the bottom
             ) {
-                menuItems.forEach { item ->
-                    Button(
-                        onClick = { selectedMenuItem = item },
-                        modifier = Modifier.fillMaxWidth(),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = if (selectedMenuItem == item) Color.Black else Color.Gray
-                        )
-                    ) {
-                        Text(text = item)
+                // Menu Items
+                Column {
+                    menuItems.forEach { item ->
+                        Button(
+                            onClick = { selectedMenuItem = item },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (selectedMenuItem == item) Color.Black else Color.Gray
+                            )
+                        ) {
+                            Text(text = item)
+                        }
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+                }
+
+                // Logout Button
+                Button(
+                    onClick = {
+                        // Handle logout
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) {
+                    Text("Logout", color = Color.White)
                 }
             }
 
