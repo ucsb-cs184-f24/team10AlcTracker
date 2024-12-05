@@ -194,6 +194,11 @@ class Landing : ComponentActivity() {
                             composable("profile") { ProfileMenu() }
                         }
                     }
+                    LaunchedEffect(Unit) {
+                        if (PersonManager.mainUser.weight == 70.0 && PersonManager.mainUser.sex == true) {
+                            navController.navigate("profile")
+                        }
+                    }
                 }
             }
         }
@@ -1083,8 +1088,7 @@ data class CurrentSession(
 @Composable
 fun ProfileMenu() {
     val menuItems = listOf("Your Data", "Health Info")
-    var selectedMenuItem by remember { mutableStateOf("Your Data") }
-    val context = LocalContext.current
+    var selectedMenuItem by remember { mutableStateOf("Health Info") }
 
     AnimatedBackground { // Wrap content with the AnimatedBackground
         Row(modifier = Modifier.fillMaxSize()) {
@@ -1094,9 +1098,8 @@ fun ProfileMenu() {
                     .fillMaxHeight()
                     .padding(16.dp)
                     .width(120.dp),
-                verticalArrangement = Arrangement.SpaceBetween // Align logout button to the bottom
+                verticalArrangement = Arrangement.SpaceBetween // Align logout button at the bottom
             ) {
-                // Menu Items
                 Column {
                     menuItems.forEach { item ->
                         Button(
@@ -1115,11 +1118,9 @@ fun ProfileMenu() {
                 // Logout Button
                 Button(
                     onClick = {
-                        // Handle logout
+                        // Handle logout logic
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
                     Text("Logout", color = Color.White)
@@ -1743,4 +1744,3 @@ fun EditableProfileField(
         }
     )
 }
-
