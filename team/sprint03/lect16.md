@@ -13,7 +13,7 @@
 - Scribe      : Madison Long
 
 ### Summary
-In this meeting, we went over hw4 and planning for code up until the freez
+In this meeting, we went over hw4 and planning for code up until the freeze
 
 ### Notes
 - Mariana Rosillo
