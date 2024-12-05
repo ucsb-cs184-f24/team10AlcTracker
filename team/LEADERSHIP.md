@@ -90,3 +90,15 @@
 ### Lecture 15 - Nov 20
 - Scribe: Ivan Hernandez
 - Scrum Master: Madison Long
+
+### Lecture 16 - Nov 25
+- Scribe: Madison Long
+- Scrum Master: Ivan Hernandez
+
+### Lecture 17 - Dec 2
+- Scribe: Ivan Hernandez
+- Scrum Master: Mariana Rosillo
+
+### Lecture 18 - Dec 4
+- Scribe: Mariana Rosillo
+- Scrum Master: Maya Rosembaum
