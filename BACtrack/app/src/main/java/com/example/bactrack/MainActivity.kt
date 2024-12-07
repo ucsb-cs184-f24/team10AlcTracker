@@ -1,6 +1,7 @@
 package com.example.bactrack
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -30,6 +31,9 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 import java.security.MessageDigest
 import android.util.Log
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.credentials.CredentialManager
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.exceptions.GetCredentialException
@@ -37,16 +41,31 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
 import com.google.firebase.firestore.local.Persistence
-
+import android.Manifest
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
-
+    private lateinit var permissionRequestLauncher: ActivityResultLauncher<String>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
-
+        permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                // Permission granted, you can make calls
+                Toast.makeText(this, "Permission granted! Now you can make calls.", Toast.LENGTH_SHORT).show()
+            } else {
+                // Permission denied, show a message to the user
+                Toast.makeText(this, "Permission denied. Cannot make calls.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            // If permission is not granted, request it
+            permissionRequestLauncher.launch(Manifest.permission.CALL_PHONE)
+        } else {
+            // Permission already granted, you can proceed with making calls
+            Toast.makeText(this, "Permission already granted. You can make calls.", Toast.LENGTH_SHORT).show()
+        }
         // Check if a user is already signed in
         val savedDisplayName = getSavedUserInfo("userDisplayName")
         val savedIdToken = getSavedUserInfo("googleIdToken")
