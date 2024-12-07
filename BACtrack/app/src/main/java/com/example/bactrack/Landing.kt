@@ -367,6 +367,7 @@ fun AnimatedBackground(content: @Composable () -> Unit) {
 
 @Composable
 fun HomeScreen() {
+    val context = LocalContext.current
     var counter by remember { mutableStateOf(0) }
     val maxCounter = 0.2
     // For BAC calculation
@@ -377,7 +378,7 @@ fun HomeScreen() {
     LaunchedEffect(Unit) {
         while (true) {
             delay(60_000L) // 1 minute
-            SessionManager.recalculateBAC()
+            SessionManager.recalculateBAC(context)
         }
     }
 
@@ -705,7 +706,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
                     drinkType = "Wine",
                     icon = Icons.Filled.WineBar,
                     onClick = {
-                        SessionManager.addDrink("wine")
+                        SessionManager.addDrink("wine", context)
                         onDismiss()
                     }
                 )
@@ -713,7 +714,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
                     drinkType = "Beer",
                     icon = Icons.Filled.SportsBar,
                     onClick = {
-                        SessionManager.addDrink("beer")
+                        SessionManager.addDrink("beer", context)
                         onDismiss()
                     }
                 )
@@ -721,7 +722,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
                     drinkType = "Shot",
                     icon = Icons.Filled.LocalDrink,
                     onClick = {
-                        SessionManager.addDrink("shot")
+                        SessionManager.addDrink("shot", context)
                         onDismiss()
                     }
                 )
@@ -729,7 +730,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
                     drinkType = "Cocktail",
                     icon = Icons.Filled.LocalBar,
                     onClick = {
-                        SessionManager.addDrink("cocktail")
+                        SessionManager.addDrink("cocktail", context )
                         onDismiss()
                     }
                 )
@@ -744,7 +745,7 @@ fun DrinkSelectionDialog(onDismiss: () -> Unit) {
                     ) {
                         Button(
                             onClick = {
-                                SessionManager.addCustomDrink(name, weight)
+                                SessionManager.addCustomDrink(name, weight, context)
                                 onDismiss()
                             },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA726)),

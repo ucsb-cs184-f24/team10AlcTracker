@@ -24,6 +24,7 @@ import androidx.compose.material.icons.filled.LocalBar
 import androidx.compose.material.icons.filled.LocalDrink
 import androidx.compose.material.icons.filled.SportsBar
 import androidx.compose.material.icons.filled.WineBar
+import androidx.compose.ui.platform.LocalContext
 
 import com.example.bactrack.SessionManager
 
@@ -32,6 +33,7 @@ import com.example.bactrack.SessionManager
 fun AlertDialog(
     onDismiss: () -> Unit
 ) {
+    val context = LocalContext.current
     androidx.compose.material3.AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {/*TODO*/ },
@@ -60,7 +62,7 @@ fun AlertDialog(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        onClick = { SessionManager.addDrink("beer") },
+                        onClick = { SessionManager.addDrink("beer", context) },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
@@ -70,7 +72,7 @@ fun AlertDialog(
                     }
 
                     Button(
-                        onClick = { SessionManager.addDrink("wine") },
+                        onClick = { SessionManager.addDrink("wine", context) },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
@@ -84,7 +86,7 @@ fun AlertDialog(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Button(
-                        onClick = { SessionManager.addDrink("shot") },
+                        onClick = { SessionManager.addDrink("shot", context) },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)
@@ -94,7 +96,7 @@ fun AlertDialog(
                     }
 
                     Button(
-                        onClick = { SessionManager.addDrink("cocktail") },
+                        onClick = { SessionManager.addDrink("cocktail", context) },
                         modifier = Modifier
                             .width(130.dp)
                             .padding(10.dp)

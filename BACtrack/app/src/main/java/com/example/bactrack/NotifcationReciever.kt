@@ -16,20 +16,20 @@ class DrinkActionReceiver : BroadcastReceiver() {
             // Example: Start LandingActivity or any action you need
             val landingIntent = Intent(context, Landing::class.java)
             landingIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            SessionManager.addDrink("shot")
+            // Pass context to addDrink()
+            SessionManager.addDrink("shot", context)
             Toast.makeText(context, "Drink added", Toast.LENGTH_SHORT).show()
 
-        }
-        else if (intent.action == "ADD_BEER"){
+        } else if (intent.action == "ADD_BEER") {
             Log.d("DrinkActionReceiver", "Add Drink button pressed.")
 
             // You can add logic to add a drink, update UI, or start an activity
             // Example: Start LandingActivity or any action you need
             val landingIntent = Intent(context, Landing::class.java)
             landingIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            SessionManager.addDrink("beer")
+            // Pass context to addDrink()
+            SessionManager.addDrink("beer", context)
             Toast.makeText(context, "Drink added", Toast.LENGTH_SHORT).show()
         }
-
     }
 }
