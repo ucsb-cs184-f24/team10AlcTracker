@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.net.uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -382,6 +383,8 @@ fun HomeScreen() {
         }
     }
 
+    CheckAndSendSms(currentBAC)
+
 
 
     // Infinite transition for animated background gradient
@@ -579,7 +582,25 @@ fun HomeScreen() {
     }
 }
 
+fun sendSms(context: Context, phoneNumber: String, message: String) {
+    val uri = Uri.parse("smsto:$phoneNumber")
+    val intent = Intent(Intent.ACTION_SENDTO, uri).apply {
+        putExtra("sms_body", message)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+    }
+    context.startActivity(intent)
+}
 
+@Composable
+fun CheckAndSendSms(currentBAC: Double) {
+    val context = LocalContext.current
+    var smsCount by remember { mutableStateOf(0) }
+
+    if (currentBAC > 0.3 && smsCount == 0) {
+        sendSms(context, PersonManager.mainUser.emergencyContactNum.toString(), "Holy moly I am definitely crunk come pick me up.")
+        smsCount += 1
+    }
+}
 
 fun getFeelingForBAC(bac: Double): String {
     return when {
