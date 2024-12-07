@@ -1471,7 +1471,9 @@ fun HealthInfoSection() {
                         }
                     }
                 },
-                label = { Text("Enter your weight (kg)") },
+                label = { Text(
+                    text = "Enter your weight (kg)",
+                    color = Color.Black) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
@@ -1554,7 +1556,10 @@ fun dropDownMenu(
                 .onGloballyPositioned { coordinates ->
                     textFiledSize = coordinates.size.toSize()
                 },
-            label = { Text("Select your gender") },
+            label = { Text(
+                text = "Select your gender",
+                color = Color.Black)
+                    },
             readOnly = true,
             trailingIcon = {
                 Icon(icon, "", Modifier.clickable { expanded = !expanded })
@@ -1604,7 +1609,10 @@ fun BodyMeasurementsTab() {
             OutlinedTextField(
                 value = weight,
                 onValueChange = { weight = it },
-                label = { Text("Enter your weight (kg)") },
+                label = {
+                    Text(
+                        text = "Enter your weight (kg)",
+                        color = Color.Black)},
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
             )
