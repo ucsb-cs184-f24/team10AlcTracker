@@ -42,7 +42,7 @@ User will track their alcohol content throughout the night and have options to:
 </ol>
 
 ## Installation 
-You will find a zip folder in our release tag named "First Release". Inside is an APK to use the app. Download the file and extract the apk. The APK can then be moved to an Android device and installed. Currently, our oldest version tested is Android 12, thus we cannot confirm if BACtrack works on any previous versions.
+You will find a zip folder in our release tag named "v1.0.0". Inside is an APK to use the app. Download the file and extract the apk. The APK can then be moved to an Android device and installed. Currently, our oldest version tested is Android 12, thus we cannot confirm if BACtrack works on any previous versions.
 
 ## Instructions for virtual deployment:
 * download android studio from the following link https://developer.android.com/studio
