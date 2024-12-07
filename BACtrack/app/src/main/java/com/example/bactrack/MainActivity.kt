@@ -36,25 +36,43 @@ import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.firestore.local.Persistence
 
 
 class MainActivity : ComponentActivity() {
     private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FirebaseApp.initializeApp(this)
         auth = FirebaseAuth.getInstance()
 
-        setContent {
-            BACtrackTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    SignInScreen()
+        // Check if a user is already signed in
+        val savedDisplayName = getSavedUserInfo("userDisplayName")
+        val savedIdToken = getSavedUserInfo("googleIdToken")
+
+        // If user info exists, go directly to the Landing screen
+        if (!savedDisplayName.isNullOrEmpty()) {
+            val intent = Intent(this, Landing::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            setContent {
+                BACtrackTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        SignInScreen()
+                    }
                 }
             }
         }
+    }
+
+    private fun getSavedUserInfo(key: String): String? {
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        return sharedPreferences.getString(key, null)
     }
 
     @Composable
@@ -143,7 +161,7 @@ class MainActivity : ComponentActivity() {
                     val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                     val googleIdToken = googleIdTokenCredential.idToken
                     val displayName = googleIdTokenCredential.displayName
-
+                    saveUserInfo(displayName)
                     val intent = Intent(context, Landing::class.java).apply {
                         putExtra("USERNAME", displayName)
                     }
@@ -211,7 +229,8 @@ class MainActivity : ComponentActivity() {
                 val email = user?.email ?: "No email"
                 val username = user?.displayName ?: email.substringBefore("@")
                 val githubId = user?.uid ?: "No ID"
-
+                val displayName = user?.displayName ?: email.substringBefore("@")
+                saveUserInfo(displayName)
                 val intent = Intent(this, Landing::class.java).apply {
                     putExtra("EMAIL", email)
                     putExtra("USERNAME", username)
@@ -224,5 +243,11 @@ class MainActivity : ComponentActivity() {
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Sign-in failed: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+    }
+    private fun saveUserInfo(displayName: String?) {
+        val sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("userDisplayName", displayName)
+        editor.apply()
     }
 }

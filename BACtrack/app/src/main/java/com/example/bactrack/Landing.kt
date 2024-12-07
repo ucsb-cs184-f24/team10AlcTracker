@@ -3,6 +3,7 @@ package com.example.bactrack
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -40,6 +41,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
@@ -84,6 +86,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -114,6 +117,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.bactrack.ui.theme.BACtrackTheme
+import com.google.firebase.auth.FirebaseAuth
 import com.maxkeppeker.sheets.core.models.base.rememberSheetState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
@@ -1089,7 +1093,7 @@ data class CurrentSession(
 fun ProfileMenu() {
     val menuItems = listOf("Your Data", "Health Info")
     var selectedMenuItem by remember { mutableStateOf("Health Info") }
-
+    val context = LocalContext.current
     AnimatedBackground { // Wrap content with the AnimatedBackground
         Row(modifier = Modifier.fillMaxSize()) {
             // Menu Column on the left
@@ -1118,7 +1122,16 @@ fun ProfileMenu() {
                 // Logout Button
                 Button(
                     onClick = {
-                        // Handle logout logic
+                        // Sign out from Firebase
+                        FirebaseAuth.getInstance().signOut()
+
+                        // Clear user info from SharedPreferences
+                        clearUserInfo(context)
+
+                        // Navigate to the MainActivity or SignInScreen
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                        (context as? ComponentActivity)?.finish() // Close current activity (optional)
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
@@ -1137,11 +1150,25 @@ fun ProfileMenu() {
                 when (selectedMenuItem) {
                     "Your Data" -> PersonalInformationSection()
                     "Health Info" -> HealthInfoSection()
+
                 }
+
             }
         }
     }
 }
+
+
+
+private fun clearUserInfo(context: Context) {
+    val sharedPreferences = context.getSharedPreferences("UserPrefs", Context.MODE_PRIVATE)
+    val editor = sharedPreferences.edit()
+    editor.clear() // Clear all saved data
+    editor.apply()
+}
+
+
+
 
 @SuppressLint("UnrememberedMutableInteractionSource")
 @OptIn(ExperimentalMaterial3Api::class)
