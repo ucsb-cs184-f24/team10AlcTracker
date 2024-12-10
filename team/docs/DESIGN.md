@@ -60,6 +60,9 @@ Here is the system architecture diagram for the BACtrack application:
 | Nov 15     | Section 7   | Worked on UI/UX design and app logic.                                                      |
 | Nov 18     | Lecture 14  | Continued refining logic and design.                                                       |
 | Nov 20     | Lecture 15  | Tackled deliverables, fixed logic errors, and implemented feedback from class.             |
+| Nov 25     | Lecture 16       | In this meeting, we went over HW4 and planning for code up until the freeze.              |
+| Dec 2      | Lecture 17       | In this meeting, we continued to talk about HW4 and future implementations.               |
+| Dec 4      | Lecture 18       | In this meeting, we talked about final touches and distribution of work as we approached the final presentation. Started brainstorming the final video presentation as well. |
 
 ---
 
