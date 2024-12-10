@@ -40,7 +40,7 @@ import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.firestore.local.Persistence
+//import com.google.firebase.firestore.local.Persistence
 import android.Manifest
 
 class MainActivity : ComponentActivity() {
