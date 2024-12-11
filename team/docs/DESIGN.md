@@ -106,3 +106,16 @@ Here is the system architecture diagram for the BACtrack application:
 
 - **Non-Intrusive Notifications**:
   - Design notifications to be informative but not disruptive.
+ 
+### Difficulties
+
+- **Google auth**:
+  - You don't sign into it, rather, it uses the google accounts on the phone (at least how we did it), and if you do not have an account on the phone, it says "no credentials." Took us a while to figure that out.
+- **Speed of emulation**
+  - The emulator is good but SLOW. If it runs on the emulator it will run on the phone, but it is reccomended to use your own android for speed.
+- **Merge Conflicts**
+  - Rookie Mistake on our part. Most things ended up in one file which had multiple people editing it at once. As a result, merge conflicts a plenty arrived.
+- **Scheduling Outside of Class**
+  - We had two outside of class meetings that were at 8 am because of our schedule conflicts. It just did not work out so we made the most of section/lecture.
+  
+
