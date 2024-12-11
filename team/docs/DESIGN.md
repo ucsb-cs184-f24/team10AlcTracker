@@ -114,8 +114,10 @@ Here is the system architecture diagram for the BACtrack application:
 - **Speed of emulation**
   - The emulator is good but SLOW. If it runs on the emulator it will run on the phone, but it is reccomended to use your own android for speed.
 - **Merge Conflicts**
-  - Rookie Mistake on our part. Most things ended up in one file which had multiple people editing it at once. As a result, merge conflicts a plenty arrived.
+  - Rookie Mistake on our part. Most things ended up in one file which had multiple people editing it at once. As a result, merge conflicts a plenty arrived. For the future, seperate things more. Our solution was one person fixing all the merge conlflicts on their machine then pushing everything. 
 - **Scheduling Outside of Class**
   - We had two outside of class meetings that were at 8 am because of our schedule conflicts. It just did not work out so we made the most of section/lecture.
+- **Dependencies**
+  - Multiple times we hit bottlenecks with one function needing to be done to do another. Often, it was just about setting who's schedule worked on each part to get things done in a timley manner. IE, whoever is free first does the first thing and so on.
   
 
